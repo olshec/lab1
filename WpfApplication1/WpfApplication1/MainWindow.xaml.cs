@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-//rtyhj
 
 namespace WpfApplication1
 {
@@ -28,61 +27,6 @@ namespace WpfApplication1
             InitializeComponent();
         }
 
-        private void button_Click(object sender, RoutedEventArgs e)
-        {
-            richTextBox.Document.Blocks.Clear();
-            const string pattern = @"^
-            (
-                (
-                    (          (?<=^|,|\[)          (?<op>[a-z]+)         (?=,|\[|\])  )    |
-                    (          (?<=,|\[)            (?<op>\d+)            (?=,|\])     )    |
-                    (          (?<=[a-z]|\d)        (?<op>,)              (?=[a-z]|\d) )    |
-                    (          (?<=\])              (?(level)(?<op>,))    (?=[a-z]|\d) )    |
-                    (?<level>  (?<=[a-z])           (?<op>\[)             (?=[a-z]|\d) )    |
-                    (?<-level> (?<=[a-z]|\d|\])     (?<op>\])             (?=,|\]|$)   )
-                )+
-
-            )";
-            //(?(level)(?!))
-            Regex r = new Regex(pattern, RegexOptions.IgnorePatternWhitespace);
-
-            string query = "aaa[g[1],bcd[2]]";
-            query = "aaa[1,bcd[2]]!";
-            Match m = r.Match(query);
-            //MatchCollection mc = r.Matches(query);
-            //richTextBox.AppendText(" MatchCollection = " + mc.Count+ 
-            //    "     Почему же здесь 0???");
-            //richTextBox.AppendText(Environment.NewLine);
-            //richTextBox.AppendText(" count groups = " +m.Groups.Count + Environment.NewLine);
-            //Group g1 = m.Groups[0];
-            //richTextBox.AppendText(String.Format("    Группа {0} = '{1}'", "", g1.Captures.Count) + Environment.NewLine);
-            int matchCount = 0;
-
-            while (m.Success)
-            {
-                richTextBox.AppendText(String.Format("Соответствие {0}, длина {1}", ++matchCount, m.Length));
-                richTextBox.AppendText(Environment.NewLine);
-
-                for (int i = 1; i < m.Groups.Count; i++)
-                {
-                    string nameGroups = "letters";
-                    Group g = m.Groups[i];
-                    richTextBox.AppendText(String.Format("    Группа {0} = '{1}'", i, g.Value) + Environment.NewLine);
-                    for (int j = 0; j < g.Captures.Count; j++)
-                    {
-                        Capture c = g.Captures[j];
-                        richTextBox.AppendText(String.Format("        Захват {0} = '{1}', " +
-              "позиция = {2}, длина = {3} ", j, c, c.Index, c.Length) + Environment.NewLine);
-                    }
-                }
-                m = m.NextMatch();
-            }
-
-        }
-
-
-
-
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -94,50 +38,7 @@ namespace WpfApplication1
             richTextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
         }
 
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            // string text = "One car red car blue car";
-            // string pat = @"(\w+)\s+(car)";
-            richTextBox.Document.Blocks.Clear();
-            string text = "aaa[1,bcd[2]]";
-            string pat = @"^
-            (
-                (
-                    (          (?<=^|,|\[)      (?<op>[a-z]+) (?=,|\[|\])  ) |
-                    (          (?<=,|\[)        (?<op>\d+)    (?=,|\])     ) |
-                    (          (?<=[a-z]|\d|\]) (?<op>,)      (?=[a-z]|\d) ) |
-                    (?<level>  (?<=[a-z])       (?<op>\[)     (?=[a-z]|\d) ) |
-                    (?<-level> (?<=[a-z]|\d|\]) (?<op>\])     (?=,|\]|$)   )
-                )+
-                (?(level)(?!))
-            )$";
-
-            // Instantiate the regular expression object.
-            Regex r = new Regex(pat, RegexOptions.IgnorePatternWhitespace);
-
-            // Match the regular expression pattern against a text string.
-            Match m = r.Match(text);
-            int matchCount = 0;
-            while (m.Success)
-            {
-                richTextBox.AppendText(String.Format("Match" + (++matchCount)));
-                richTextBox.AppendText(Environment.NewLine);
-                for (int i = 1; i <= m.Groups.Count; i++)
-                {
-                    Group g = m.Groups[i];
-                    richTextBox.AppendText(String.Format("    Group" + i + "='" + g + "'"));
-                    richTextBox.AppendText(Environment.NewLine);
-                    CaptureCollection cc = g.Captures;
-                    for (int j = 0; j < cc.Count; j++)
-                    {
-                        Capture c = cc[j];
-                        richTextBox.AppendText(String.Format("        Capture" + j + "='" + c + "', Position=" + c.Index));
-                        richTextBox.AppendText(Environment.NewLine);
-                    }
-                }
-                m = m.NextMatch();
-            }
-        }
+       
 
         string[] masNameTypeWithNull = new string[] {"sbyte","short","int","long","byte","ushort","uint",
                "ulong","float","double","decimal","bool","char"};
@@ -156,9 +57,6 @@ namespace WpfApplication1
             string nameTypeNotNull = String.Join("|", masNameTypeNotNull);
             string nameAllType = String.Join("|", masNameAllType);
 
-            //string space = @"[\r\n\t\s]+";
-            //space = @"[\s]+";
-            // string word = @"\w";
 
             string pattern = @"^
             (
@@ -175,39 +73,7 @@ namespace WpfApplication1
                 )+
             )";
 
-
-            // (          (?<=,)                          (?(Sk),)                                  (?=,|\]|\w+)       )    |
-
-            //string pattern = @"\s
-
-            //(
-            //    (
-            //        (    (?<=" + space  + @")                             (?(SkOpen)(?!))     (" + nameAllType + @")       (?=\?|\[|" + space + @")                              )    |
-            //        (    (?<=" + space + "|" + nameTypeWithNull + @")     (?(SkOpen)(?!))     (\?)                         (?=\[|\w+|" + space + @")                             )    |
-            //        (    (?<=" + space + @"|\w+|\?|\[|\]|,|;)                                 (" + space + @")             (?=" + space + "|" +  @"|\w+|\?|\[|\]|,|;)            )    |
-            //        (    (?<=" + space + "|" + nameAllType + @"|\?)       (?(SkOpen)(?!))     (?<SkOpen>(?<Sk>\[))         (?=,|\]|" + space + @")                               )    |
-            //        (    (?<=" + space + "|" + @"\w +|\[|,)               (,)                                              (?=,|\]|\w+|" + space + @")                           )    |
-            //        (    (?<=" + space + "|" + @"|,|\[)                   (?<-Sk>\])                                       (?=\w+|" + space + @")                                )    |
-            //        (    (?<=" + space + "|" + @"|\?|\]|,)                (?(Sk)(?!))         (?<NameVar>\w+)              (?=,|;|" + space + @")                                )    |
-            //        (    (?<=" + space + "|" + @"|\w+)                    (?(Sk)(?!))         (?<-SkOpen>;)                (?=;|$|" + space + @")                                )    |
-            //    )+
-            //)";
-
-
-            //string pattern = @"\s
-            //(
-            //    (
-            //        (    (?<=" + space + @")                             (?(SkOpen)(?!))     (" + nameAllType + @")       (?=\?|\[|" + space + @")                              )    |
-            //        (    (?<=" + space + "|" + nameTypeWithNull + @")     (?(SkOpen)(?!))     (\?)                         (?=\[|\w+|" + space + @")                             )    |
-            //        (    (?<=" + space + @"|\w+|\?|\[|\]|,|;)                                 (" + space + @")             (?=" + space + "|" + @"|\w+|\?|\[|\]|,|;)            )    |
-            //        (    (?<=" + space + "|" + nameAllType + @"|\?)       (?(SkOpen)(?!))     (?<SkOpen>(?<Sk>\[))         (?=,|\]|" + space + @")                               )    |
-            //        (    (?<=" + space + "|" + @"\w +|\[|,)               (,)                                              (?=,|\]|\w+|" + space + @")                           )    |
-            //        (    (?<=" + space + "|" + @"|,|\[)                   (?<-Sk>\])                                       (?=\w+|" + space + @")                                )    |
-            //        (    (?<=" + space + "|" + @"|\?|\]|,)                (?(Sk)(?!))         (?<NameVar>\w+)              (?=,|;|" + space + @")                                )    |
-            //        (    (?<=" + space + "|" + @"|\w+)                    (?(Sk)(?!))         (?<-SkOpen>;|;)                (?=;|$|" + space + @")                                )    |
-            //        (    (?<=" + space + "|" + @"|\w+)                    (?(Sk)(?!))         (;)                          (?=;|$|" + space + @")                                )    |
-            //    )+
-            //)";
+            
 
             Regex r = new Regex(pattern, RegexOptions.IgnorePatternWhitespace);
 
@@ -218,6 +84,7 @@ namespace WpfApplication1
                 Group g = m.Groups[1];
                 richTextBox.AppendText(String.Format("True string: '{0}'   Length: '{1}'",
                     g.Value, g.Length));
+                richTextBox.AppendText(Environment.NewLine + "QUWERY = " + query.Length + Environment.NewLine);
 
                 string nameGroup = "NameVar";
                 g = m.Groups[nameGroup];
@@ -227,8 +94,7 @@ namespace WpfApplication1
                     listVars.Add(c.Value);
                 }
 
-                richTextBox.AppendText(Environment.NewLine);
-                richTextBox.AppendText(String.Format("SKOPEN: "));
+                richTextBox.AppendText("SKOPEN: "+ Environment.NewLine + Environment.NewLine);
                 nameGroup = "Sk";
                 g = m.Groups[nameGroup];
                 for (int j = 0; j < g.Captures.Count; j++)
@@ -302,21 +168,17 @@ namespace WpfApplication1
             float?[,,,] a, b; ; ; ;
             richTextBox.Document.Blocks.Clear();
 
-            string query = "     string [, ,,] bbb, a2  , uu;   ";
+            string query = "     string [, ,,] bbb, a2  , uu;;;  float a; ";
             formatString(ref query);
-            checkString(query, listVars);
-            richTextBox.AppendText(Environment.NewLine + "QUWERY = " + query.Length + Environment.NewLine);
-            richTextBox.AppendText(Environment.NewLine);
 
-            //query = "int c1,c2;";
-            //checkString(query, listVars);
-            //richTextBox.AppendText(Environment.NewLine + "QUWERY = " + query.Length + Environment.NewLine);
-            //richTextBox.AppendText(Environment.NewLine);
+            string[] masStr = query.Split(';');
+            for(int i=0;i<masStr.Length;i++)
+            {
+                checkString(masStr[i]+";", listVars);
+            }
 
-            //query = "float?[,,,]a,b,c;";
             //checkString(query, listVars);
-            //richTextBox.AppendText(Environment.NewLine + "QUWERY = " + query.Length + Environment.NewLine);
-            //richTextBox.AppendText(Environment.NewLine);
+            
 
             richTextBox.AppendText(Environment.NewLine + "vars: ");
             foreach (string s in listVars)
@@ -325,9 +187,6 @@ namespace WpfApplication1
 
         }
 
-
-
-///
 
 
     }
