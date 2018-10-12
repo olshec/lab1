@@ -48,7 +48,7 @@ namespace WpfApplication1
         string[] masNameAllType = new string[] {"sbyte","short","int","long","byte","ushort","uint",
                "ulong","float","double","decimal","bool","char", "string", "object" };
 
-        void checkString(string query, List<string> listVars)
+        int checkString(string query, List<string> listVars)
         {
 
 
@@ -79,13 +79,24 @@ namespace WpfApplication1
 
             Match m = r.Match(query);
 
+            int lenthTrueQuery = query.Length;
             if (m.Groups.Count > 1)
             {
                 Group g = m.Groups[1];
+                
                 richTextBox.AppendText(String.Format("True string: '{0}'   Length: '{1}'",
                     g.Value, g.Length));
                 richTextBox.AppendText(Environment.NewLine + "QUWERY = " + query.Length + Environment.NewLine);
-
+                if (g.Value.Length < query.Length)
+                {
+                    if(g.Value.Length==0)
+                        lenthTrueQuery = 1;
+                    else
+                        if(g.Value.ToCharArray()[g.Value.Length-1]==' ')
+                            lenthTrueQuery = g.Value.Length + 3;
+                        else
+                            lenthTrueQuery = g.Value.Length + 2;
+                }
                 string nameGroup = "NameVar";
                 g = m.Groups[nameGroup];
                 for (int j = 0; j < g.Captures.Count; j++)
@@ -94,18 +105,18 @@ namespace WpfApplication1
                     listVars.Add(c.Value);
                 }
 
-                richTextBox.AppendText("SKOPEN: "+ Environment.NewLine + Environment.NewLine);
+               // richTextBox.AppendText("SKOPEN: ");
                 nameGroup = "Sk";
                 g = m.Groups[nameGroup];
                 for (int j = 0; j < g.Captures.Count; j++)
                 {
                     Capture c = g.Captures[j];
-                    richTextBox.AppendText(c.Value);
+                    richTextBox.AppendText("SKOPEN: "+c.Value);
 
                 }
-
+                return lenthTrueQuery;
             }
-
+            return lenthTrueQuery;
 
         }
 
@@ -140,7 +151,7 @@ namespace WpfApplication1
                 {
                     str = str.Remove(str.Length - 1, 1);
                 }
-                    //str = String.Join("", str.ToCharArray(), 0, str.Length - 1);
+                   
 
             if (str.Length > 0)
             {
@@ -168,17 +179,33 @@ namespace WpfApplication1
             float?[,,,] a, b; ; ; ;
             richTextBox.Document.Blocks.Clear();
 
-            string query = "     string [, ,,] bbb, a2  , uu;;;  float a; ";
+            string query = "     string [, ,,] bbb, a2  , uu ;;; float a ff ;; ";
             formatString(ref query);
 
+            int positionError = -1;
+            int indexQuery = -1;
+            string trueQuery = ""; 
             string[] masStr = query.Split(';');
-            for(int i=0;i<masStr.Length;i++)
+            int countString = masStr.Length;
+            if (masStr[masStr.Length - 1] == "")
+                countString--;
+            for (int i=0;i< countString; i++)
             {
-                checkString(masStr[i]+";", listVars);
+                string q = masStr[i]+";" ;
+                int lenth = checkString(q, listVars);
+                if (q.Length>lenth)
+                {
+                    positionError = lenth;
+                    indexQuery=i;
+                    trueQuery += q.Substring(0, positionError);
+                    break;
+                }
+                trueQuery += q;
             }
 
-            //checkString(query, listVars);
-            
+            richTextBox.AppendText(Environment.NewLine + "--trueQuery: "+trueQuery);
+            richTextBox.AppendText(Environment.NewLine + "--indexQuery: " + indexQuery);
+
 
             richTextBox.AppendText(Environment.NewLine + "vars: ");
             foreach (string s in listVars)
