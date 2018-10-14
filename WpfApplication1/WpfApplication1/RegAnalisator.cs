@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace WpfApplication1
 {
 
-    class RegAnalisator
+  public  class RegAnalisator
     {
 
         string[] masNameTypeWithNull = new string[] {"sbyte","short","int","long","byte","ushort","uint",
@@ -33,7 +33,7 @@ namespace WpfApplication1
             return false;
         }
 
-        public int checkString(string query, List<string> listVars)
+        public InfoAboutError checkString(string query, List<string> listVars)
         {
             string nameTypeWithNull = String.Join("|", masNameTypeWithNull);
             string nameTypeNotNull = String.Join("|", masNameTypeNotNull);
@@ -61,36 +61,33 @@ namespace WpfApplication1
 
             Match m = r.Match(query);
 
-            int lenthTrueQuery = query.Length;
-            int positionError = -1;
+            InfoAboutError inf = null;
             if (m.Groups.Count > 1)
             {
                 Group g = m.Groups[1];
 
                 if (g.Value.Length < query.Length)
                 {
-                    if (g.Value.Length == 0)
-                        if(query==";")
-                            lenthTrueQuery = 1;
+                    if (g.Value.Length == 0) {
+                        if (query == ";")
+                            inf = new InfoAboutError(false, query);
                         else
-                        {
-                            lenthTrueQuery = 0;
-                        //    positionError = 0;
-                        }
-                            
+                            inf = new InfoAboutError(true, query);
+                    }
                     else
-                    // if(g.Value.ToCharArray()[g.Value.Length-1]==' ')
-                    //     lenthTrueQuery = g.Value.Length + 3;
-                    // else
                     {
-                        lenthTrueQuery = g.Value.Length;
-                        if(query.ToCharArray()[g.Value.Length]==' ')
-                           {
-                           // positionError = g.Value.Length + 2;
-                            lenthTrueQuery = g.Value.Length + 2;
-                        }
+                        if (query.ToCharArray()[g.Value.Length] == ' ')
+                            inf = new InfoAboutError(true,
+                                new String(query.ToCharArray(), 0, g.Value.Length));
+                        else
+                            inf = new InfoAboutError(true,
+                                new String(query.ToCharArray(), 0, g.Value.Length));
                     }
                         
+                }
+                else
+                {
+                    inf = new InfoAboutError(false, query);
                 }
                 string nameGroup = "NameVar";
                 g = m.Groups[nameGroup];
@@ -100,9 +97,10 @@ namespace WpfApplication1
                     listVars.Add(c.Value);
                 }
 
-                return lenthTrueQuery;
+                
+                return inf;
             }
-            return lenthTrueQuery;
+            return null;
 
         }
 

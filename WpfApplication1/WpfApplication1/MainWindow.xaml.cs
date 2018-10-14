@@ -199,12 +199,13 @@ namespace WpfApplication1
                         q += ";";
                 }
                 else q += ";" ;
-                int lenth = ra.checkString(q, listVars);
-                if (q.Length>lenth)
+                InfoAboutError inf = ra.checkString(q, listVars);
+                //int lenth = ra.checkString(q, listVars);
+                if (inf.error==true)
                 {
-                    positionError = lenth;
+                    positionError = inf.str.Length-1;
                     indexQuery=i;
-                    trueQuery += q.Substring(0, positionError);
+                    trueQuery += inf.str;
                     break;
                 }
                 trueQuery += q;
