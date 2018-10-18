@@ -80,15 +80,25 @@ namespace WpfApplication1
                         if (query.ToCharArray()[indexLenth] == ' ')
                         {
                             indexLenth++;
+                            string nameVar = "";
                             while (indexLenth<query.ToCharArray().Length)
                             {
                                 if (query.ToCharArray()[indexLenth] != ' '
                                     && !checkKey(query.ToCharArray()[indexLenth]))
+                                {
+                                    nameVar += query.ToCharArray()[indexLenth];
                                     indexLenth++;
+                                }
                                 else break;
                             }
+                            listVars.Add(nameVar);
+
+                            while (indexLenth < query.ToCharArray().Length&&
+                                query.ToCharArray()[indexLenth] == ' ')
+                                indexLenth++;
+
                             inf = new InfoAboutError(true,
-                               new String(query.ToCharArray(), 0, indexLenth-1), indexLenth+1);
+                               new String(query.ToCharArray(), 0, indexLenth), indexLenth+1);
                         }
                         else
                             inf = new InfoAboutError(true,
