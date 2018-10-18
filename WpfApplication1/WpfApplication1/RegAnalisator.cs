@@ -72,16 +72,27 @@ namespace WpfApplication1
                         if (query == ";")
                             inf = new InfoAboutError(false, query);
                         else
-                            inf = new InfoAboutError(true, query);
+                            inf = new InfoAboutError(true, query, query.Length+1);
                     }
                     else
                     {
-                        if (query.ToCharArray()[g.Value.Length] == ' ')
+                        int indexLenth = g.Value.Length-1;
+                        if (query.ToCharArray()[indexLenth] == ' ')
+                        {
+                            indexLenth++;
+                            while (indexLenth<query.ToCharArray().Length)
+                            {
+                                if (query.ToCharArray()[indexLenth] != ' '
+                                    && !checkKey(query.ToCharArray()[indexLenth]))
+                                    indexLenth++;
+                                else break;
+                            }
                             inf = new InfoAboutError(true,
-                                new String(query.ToCharArray(), 0, g.Value.Length));
+                               new String(query.ToCharArray(), 0, indexLenth-1), indexLenth+1);
+                        }
                         else
                             inf = new InfoAboutError(true,
-                                new String(query.ToCharArray(), 0, g.Value.Length));
+                                new String(query.ToCharArray(), 0, indexLenth-2), indexLenth);
                     }
                         
                 }
