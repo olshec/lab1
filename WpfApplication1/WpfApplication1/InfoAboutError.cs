@@ -11,12 +11,14 @@ namespace WpfApplication1
         public bool error;
         public string str;
         public int positionError;
+        public char errorChar;
 
-        public InfoAboutError(bool er, string s, int positionError=-1)
+        public InfoAboutError(bool er, string s, int positionError=-1, char errorChar='-')
         {
             error = er;
             str = s;
             this.positionError = positionError;
+            this.errorChar = errorChar;
         }
 
         public InfoAboutError()
@@ -24,6 +26,7 @@ namespace WpfApplication1
             error = false;
             str = "";
             this.positionError = -1;
+            this.errorChar = '-';
         }
 
 

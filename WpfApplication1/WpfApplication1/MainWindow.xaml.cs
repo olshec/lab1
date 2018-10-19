@@ -82,6 +82,7 @@ namespace WpfApplication1
             richTextBox.AppendText(Environment.NewLine + "trueQuery: "+trueQuery);
             richTextBox.AppendText(Environment.NewLine + "indexLineError: " + indexLineError);
             richTextBox.AppendText(Environment.NewLine + "error position: " + inf.positionError);
+            richTextBox.AppendText(Environment.NewLine + "error symbol: " + inf.errorChar);
 
             richTextBox.AppendText(Environment.NewLine + "vars: ");
             foreach (string s in listVars)
