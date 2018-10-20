@@ -146,12 +146,12 @@ namespace WpfApplication1
                             listVars.Add(c.Value);
                         }
 
-                        bool hasNameType = false;
+                       // bool hasNameType = false;
                         string nameGroup2 = "NameType";
                         Group gr2 = m.Groups[nameGroup2];
                         for (int j = 0; j < gr2.Captures.Count; j++)
                         {
-                            hasNameType = true;
+                         //   hasNameType = true;
                             Capture c = gr2.Captures[j];
                             listType.Add(c.Value);
                         }
@@ -274,6 +274,16 @@ namespace WpfApplication1
                         Capture c = gr.Captures[j];
                         listVars.Add(c.Value);
                     }
+
+                    string nameGroup2 = "NameType";
+                    Group gr2 = m.Groups[nameGroup2];
+                    for (int j = 0; j < gr2.Captures.Count; j++)
+                    {
+                        //   hasNameType = true;
+                        Capture c = gr2.Captures[j];
+                        listType.Add(c.Value);
+                    }
+
                 }
                 
 
