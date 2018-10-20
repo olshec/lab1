@@ -20,8 +20,11 @@ namespace NUnit.Tests2
         [TestCase("int b; dd , a;", 'd', 6)]
         [TestCase("int a, b^ ,c;", '^', 6)]
 
-        [TestCase("int j, d", '-', 6)]
+        [TestCase("int j, d", ';', 6)]
         [TestCase("int j, b d;", 'd', 6)]
+
+        [TestCase("int j; b d;", 'b', 6)]
+        [TestCase("int j; int b d;", 'd', 6)]
         public void TestMethod(string query, char errorSymbol, int position)
         {
 
