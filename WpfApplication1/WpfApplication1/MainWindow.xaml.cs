@@ -46,12 +46,13 @@ namespace WpfApplication1
         {
             RegAnalisator ra = new RegAnalisator();
             List<string> listVars = new List<string>();
+            List<string> listTypes = new List<string>();
             //float?[,,,] a, b; ; ; ;
             richTextBox.Document.Blocks.Clear();
 
             string query = textBox.Text;
 
-            InfoAboutError inf = ra.getTrueQuery(query, listVars);
+            InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
            
 
             richTextBox.AppendText(Environment.NewLine + "trueQuery: "+inf.trueQuery);
@@ -62,6 +63,11 @@ namespace WpfApplication1
             richTextBox.AppendText(Environment.NewLine + "vars: ");
             foreach (string s in listVars)
                 if(s!="")
+                    richTextBox.AppendText(s + ", ");
+
+            richTextBox.AppendText(Environment.NewLine + "Types: ");
+            foreach (string s in listTypes)
+                if (s != "")
                     richTextBox.AppendText(s + ", ");
             richTextBox.AppendText(Environment.NewLine);
 

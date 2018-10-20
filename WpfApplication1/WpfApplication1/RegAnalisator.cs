@@ -61,7 +61,7 @@ namespace WpfApplication1
             return false;
         }
 
-        public InfoAboutError checkString(string query, List<string> listVars)
+        public InfoAboutError checkString(string query, List<string> listVars, List<string> listType)
         {
             string nameTypeWithNull = String.Join("|", masNameTypeWithNull);
             string nameTypeNotNull = String.Join("|", masNameTypeNotNull);
@@ -101,10 +101,28 @@ namespace WpfApplication1
                             inf = new InfoAboutError(false, query);
                         else
                         {
-                            //int]
+                            
                             if (isKey(query.ToCharArray()[query.Length - 1]))
-                                inf = new InfoAboutError(true, "", query.Length,
+                            {
+                                bool hasNameType = false;
+                                string nameGroup = "NameType";
+                                Group gr = m.Groups[nameGroup];
+                                for (int j = 0; j < gr.Captures.Count; j++)
+                                {
+                                    hasNameType = true;
+                                    Capture c = gr.Captures[j];
+                                    listType.Add(c.Value);
+                                }
+                                //int]
+                                if (hasNameType)
+                                        inf = new InfoAboutError(true, "", query.Length,
                                     query.ToCharArray()[query.Length - 1]);
+                                //dfg,dfg,dg
+                                else
+                                    inf = new InfoAboutError(true, "", 0,
+                                    query.ToCharArray()[0]);
+                            }
+                                
                             
                             else
                                 //int
@@ -127,7 +145,17 @@ namespace WpfApplication1
                             Capture c = gr.Captures[j];
                             listVars.Add(c.Value);
                         }
-                        
+
+                        bool hasNameType = false;
+                        string nameGroup2 = "NameType";
+                        Group gr2 = m.Groups[nameGroup2];
+                        for (int j = 0; j < gr2.Captures.Count; j++)
+                        {
+                            hasNameType = true;
+                            Capture c = gr2.Captures[j];
+                            listType.Add(c.Value);
+                        }
+
                         int indexLenth = g.Value.Length-1;
                         if (query.ToCharArray()[indexLenth] == ' ')
                         {
@@ -194,7 +222,8 @@ namespace WpfApplication1
                                 {
                                     if (query.ToCharArray()[indexLenth] != ' '
                                         && !isKey(query.ToCharArray()[indexLenth])
-                                        && !isUseKey(query.ToCharArray()[indexLenth]))
+                                        && !isUseKey(query.ToCharArray()[indexLenth])
+                                        )
                                     {
                                         nameVar += query.ToCharArray()[indexLenth];
                                         indexLenth++;
@@ -206,13 +235,28 @@ namespace WpfApplication1
                                 query.ToCharArray()[indexLenth] == ' ')
                                     indexLenth++;
                                 listVars.Add(nameVar);
-                                if (indexLenth < query.ToCharArray().Length)
+                                if (indexLenth < query.ToCharArray().Length
+                                    && query.ToCharArray()[indexLenth]==',')
+                                {
+                                    indexLenth++;
+                                    while (indexLenth < query.ToCharArray().Length &&
+                                    query.ToCharArray()[indexLenth] == ' ')
+                                        indexLenth++;
                                     inf = new InfoAboutError(true,
-                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
-                                   query.ToCharArray()[indexLenth]);
+                                  new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
+                                  query.ToCharArray()[indexLenth]);
+
+                                }
                                 else
-                                    inf = new InfoAboutError(true,
-                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
+                                    //int j, b d;
+                                    if(indexLenth< query.ToCharArray().Length)
+                                        inf = new InfoAboutError(true,
+                                            new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
+                                            query.ToCharArray()[indexLenth]);
+                                    //int j, d d
+                                    else
+                                        inf = new InfoAboutError(true,
+                                            new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
 
                             }
 
@@ -290,7 +334,7 @@ namespace WpfApplication1
         }
 
 
-        public InfoAboutError getTrueQuery(string query, List<string> listVars)
+        public InfoAboutError getTrueQuery(string query, List<string> listVars, List<string> listTypes)
         {
             RegAnalisator ra = new RegAnalisator();
             InfoAboutError inf = new InfoAboutError();
@@ -310,7 +354,7 @@ namespace WpfApplication1
                         q += ";";
                 }
                 else q += ";";
-                inf = ra.checkString(q, listVars);
+                inf = ra.checkString(q, listVars,listTypes);
                 if (inf.error == true)
                 {
                     inf.indexLineError = i;

@@ -15,13 +15,21 @@ namespace NUnit.Tests2
         [TestCase("int ! , a;",'!',5)]
         [TestCase("int !b , a;", '!',5)]
         [TestCase("int b! , a;", '!',6)]
+
+        [TestCase("dd , a;", 'd', 6)]
+        [TestCase("int b; dd , a;", 'd', 6)]
+        [TestCase("int a, b^ ,c;", '^', 6)]
+
+        [TestCase("int j, d", '-', 6)]
+        [TestCase("int j, b d;", 'd', 6)]
         public void TestMethod(string query, char errorSymbol, int position)
         {
-            
+
             RegAnalisator ra = new RegAnalisator();
             List<string> listVars = new List<string>();
+            List<string> listTypes = new List<string>();
 
-            InfoAboutError inf = ra.getTrueQuery(query,listVars);
+            InfoAboutError inf = ra.getTrueQuery(query,listVars, listTypes);
 
             Assert.AreEqual(inf.errorChar, errorSymbol);
         }
