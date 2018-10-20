@@ -20,10 +20,36 @@ namespace WpfApplication1
                "ulong","float","double","decimal","bool","char", "string", "object" };
 
 
-        private bool checkKey(char chekChar)
+        private bool isType(string str)
         {
-            char[] listReplaceString = new char[] { '?', '[', ']', ',', ';' };
-            foreach (char c in listReplaceString)
+            //char[] listReplaceString = new char[] { '?', '[', ']', ',', ';' };
+            foreach (string s in masNameAllType)
+            {
+                if (s == str)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool isUseKey(char chekChar)
+        {
+            char[] listKey = new char[] { '!', '`', '~', '\'', '.', '\\', '/' };
+            foreach (char c in listKey)
+            {
+                if (c == chekChar)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool isKey(char chekChar)
+        {
+            char[] listKey = new char[] { '?', '[', ']', ',', ';' };
+            foreach (char c in listKey)
             {
                 if (c == chekChar)
                 {
@@ -39,19 +65,20 @@ namespace WpfApplication1
             string nameTypeNotNull = String.Join("|", masNameTypeNotNull);
             string nameAllType = String.Join("|", masNameAllType);
 
+            string symbolInVar = "[abc]+";
 
             string pattern = @"^
             (
                 (
-                    (          (?<=^)                          (?<NameType>" + nameAllType + @")                    (?=\?|\[|\s)       )    |
-                    (          (?<=" + nameTypeWithNull + @")  (\?)                                      (?=\[|\w+)         )    |
-                    (          (?<=" + nameAllType + @")       (\s)                                      (?=\w+)            )    |
+                    (          (?<=^)                          (?<NameType>" + nameAllType + @")         (?=\?|\[|\s)       )    |
+                    (          (?<=" + nameTypeWithNull + @")  (\?)                                      (?=\[|"+symbolInVar+@")         )    |
+                    (          (?<=" + nameAllType + @")       (\s)                                      (?="+symbolInVar+@")            )    |
                     (          (?<=\?|" + nameAllType + @")    (?<Sk>\[)                                 (?=,|\])           )    |
-                    (          (?<=\w+|\[)                     (,)                                       (?=,|\]|\w+)       )    |
+                    (          (?<="+symbolInVar+@"|\[)                     (,)                                       (?=,|\]|"+symbolInVar+@")       )    |
                     (          (?<=,)                          (?(Sk),)                                  (?=,|\])           )    |
-                    (          (?<=,|\[)                       (?<-Sk>\])                                (?=\w+)            )    |
-                    (          (?<=\?|\s|\]|,)  (?(Sk)(?!))    (?<NameVar>\w+)                           (?=,|;)            )    |
-                    (          (?<=\w+)         (?(Sk)(?!))    (;)                                       (?=;|$)            )    |
+                    (          (?<=,|\[)                       (?<-Sk>\])                                (?="+symbolInVar+@")            )    |
+                    (          (?<=\?|\s|\]|,)  (?(Sk)(?!))    (?<NameVar>"+symbolInVar+@")                           (?=,|;)            )    |
+                    (          (?<="+symbolInVar+@")         (?(Sk)(?!))    (;)                                       (?=;|$)            )    |
                 )+
             )";
 
@@ -73,12 +100,17 @@ namespace WpfApplication1
                         else
                         {
                             //int]
-                            if(checkKey(query.ToCharArray()[query.Length-1]))
-                                inf = new InfoAboutError(true, query, query.Length,
+                            if (isKey(query.ToCharArray()[query.Length - 1]))
+                                inf = new InfoAboutError(true, "", query.Length,
                                     query.ToCharArray()[query.Length - 1]);
-                            //int
+                            
                             else
-                                inf = new InfoAboutError(true, query, query.Length+1);
+                                //int
+                                if (isType(query))
+                                    inf = new InfoAboutError(true, "", query.Length + 1);
+                                //integreg
+                                else
+                                    inf = new InfoAboutError(true, "", 0, query.ToCharArray()[0]);
 
                         }
                             
@@ -94,7 +126,7 @@ namespace WpfApplication1
                             Capture c = gr.Captures[j];
                             listVars.Add(c.Value);
                         }
-
+                        
                         int indexLenth = g.Value.Length-1;
                         if (query.ToCharArray()[indexLenth] == ' ')
                         {
@@ -103,7 +135,8 @@ namespace WpfApplication1
                             while (indexLenth<query.ToCharArray().Length)
                             {
                                 if (query.ToCharArray()[indexLenth] != ' '
-                                    && !checkKey(query.ToCharArray()[indexLenth]))
+                                    && !isKey(query.ToCharArray()[indexLenth])
+                                    && !isUseKey(query.ToCharArray()[indexLenth]))
                                 {
                                     nameVar += query.ToCharArray()[indexLenth];
                                     indexLenth++;
@@ -127,7 +160,7 @@ namespace WpfApplication1
                         
                         else
                         {
-                            //if(!checkKey(query.ToCharArray()[indexLenth]))
+                            //if(!isKey(query.ToCharArray()[indexLenth]))
                                 indexLenth++;
                             while (indexLenth < query.ToCharArray().Length &&
                                 query.ToCharArray()[indexLenth] == ' ')
@@ -135,7 +168,7 @@ namespace WpfApplication1
 
                             //int g, f , ]   , f 
                             if (indexLenth < query.ToCharArray().Length &&
-                                (checkKey(query.ToCharArray()[indexLenth]) &&
+                                (isKey(query.ToCharArray()[indexLenth]) &&
                                 !hasVar)
                                 //&&query.ToCharArray()[indexLenth]!='?'
                                 //&&query.ToCharArray()[indexLenth]!=']'
@@ -161,7 +194,8 @@ namespace WpfApplication1
                                 while (indexLenth < query.ToCharArray().Length)
                                 {
                                     if (query.ToCharArray()[indexLenth] != ' '
-                                        && !checkKey(query.ToCharArray()[indexLenth]))
+                                        && !isKey(query.ToCharArray()[indexLenth])
+                                        && !isUseKey(query.ToCharArray()[indexLenth]))
                                     {
                                         nameVar += query.ToCharArray()[indexLenth];
                                         indexLenth++;
@@ -233,8 +267,13 @@ namespace WpfApplication1
                 for (int i = 0; i < masString.Length - 1; i++)
                 {
 
-                    if (!checkKey(masString[i].ToCharArray()[masString[i].Length - 1]) &&
-                        !checkKey(masString[i + 1].ToCharArray()[0]))
+                    if (
+                        (!isKey(masString[i].ToCharArray()[masString[i].Length - 1]) &&
+                        !isKey(masString[i + 1].ToCharArray()[0]))
+                        ||
+                        (isUseKey(masString[i].ToCharArray()[masString[i].Length - 1])||
+                        isUseKey(masString[i + 1].ToCharArray()[0]))
+                        )
                         newString += " ";
                     newString += masString[i + 1];
                 }

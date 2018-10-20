@@ -86,7 +86,8 @@ namespace WpfApplication1
 
             richTextBox.AppendText(Environment.NewLine + "vars: ");
             foreach (string s in listVars)
-                richTextBox.AppendText(s + ", ");
+                if(s!="")
+                    richTextBox.AppendText(s + ", ");
             richTextBox.AppendText(Environment.NewLine);
 
         }
