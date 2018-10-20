@@ -12,7 +12,12 @@ namespace WpfApplication1
         public string str;
         public int positionError;
         public char errorChar;
-       // public string message;
+
+
+        public int indexLineError;
+        public string trueQuery;
+
+        // public string message;
 
         public InfoAboutError(bool er, string s, int positionError=-1, char errorChar='-')
         {
@@ -20,22 +25,19 @@ namespace WpfApplication1
             str = s;
             this.positionError = positionError;
             this.errorChar = errorChar;
-        }
 
-        //public InfoAboutError(bool er, string s, int positionError, string message)
-        //{
-        //    error = er;
-        //    str = s;
-        //    this.positionError = positionError;
-        //    this.message = message;
-        //}
+            this.indexLineError = -1;
+            this.trueQuery = "";
+        }
 
         public InfoAboutError()
         {
-            error = false;
-            str = "";
+            this.error = false;
+            this.str = "";
             this.positionError = -1;
             this.errorChar = '-';
+            this.indexLineError = -1;
+            this.trueQuery = "";
         }
 
 

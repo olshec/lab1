@@ -39,48 +39,23 @@ namespace WpfApplication1
         }
 
        
+        
+
 
         private void button2_Click(object sender, RoutedEventArgs e)
         {
             RegAnalisator ra = new RegAnalisator();
             List<string> listVars = new List<string>();
-            InfoAboutError inf=new InfoAboutError();
             //float?[,,,] a, b; ; ; ;
             richTextBox.Document.Blocks.Clear();
 
             string query = textBox.Text;
-            ra.formatString(ref query);
 
-           // int positionError = -1;
-            int indexLineError = -1;
-            string trueQuery = ""; 
-            string[] masStr = query.Split(';');
-            int countString = masStr.Length;
-            if (masStr[masStr.Length - 1] == "")
-                countString--;
-            for (int i=0;i< countString; i++)
-            {
-                string q = masStr[i];
-                if (i == countString - 1)
-                {
-                    if (query.ToCharArray()[query.Length - 1] == ';')
-                        q += ";";
-                }
-                else q += ";" ;
-                inf = ra.checkString(q, listVars);
-                //int lenth = ra.checkString(q, listVars);
-                if (inf.error==true)
-                {
-                   // positionError = inf.str.Length-1;
-                    indexLineError=i;
-                    trueQuery += inf.str;
-                    break;
-                }
-                trueQuery += q;
-            }
+            InfoAboutError inf = ra.getTrueQuery(query, listVars);
+           
 
-            richTextBox.AppendText(Environment.NewLine + "trueQuery: "+trueQuery);
-            richTextBox.AppendText(Environment.NewLine + "indexLineError: " + indexLineError);
+            richTextBox.AppendText(Environment.NewLine + "trueQuery: "+inf.trueQuery);
+            richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
             richTextBox.AppendText(Environment.NewLine + "error position: " + inf.positionError);
             richTextBox.AppendText(Environment.NewLine + "error symbol: " + inf.errorChar);
 

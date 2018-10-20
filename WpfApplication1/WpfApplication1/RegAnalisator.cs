@@ -35,7 +35,9 @@ namespace WpfApplication1
 
         private bool isUseKey(char chekChar)
         {
-            char[] listKey = new char[] { '!', '`', '~', '\'', '.', '\\', '/' };
+            char[] listKey = new char[] { '!', '`', '~', '\'',
+                '.', '\\', '/','-','+','@','#','№','$','%','^',':',
+            '&','*','(',')','{','}','|'};
             foreach (char c in listKey)
             {
                 if (c == chekChar)
@@ -65,7 +67,7 @@ namespace WpfApplication1
             string nameTypeNotNull = String.Join("|", masNameTypeNotNull);
             string nameAllType = String.Join("|", masNameAllType);
 
-            string symbolInVar = "[abc]+";
+            string symbolInVar = "[0-9a-zA-Z_]+";
 
             string pattern = @"^
             (
@@ -87,7 +89,7 @@ namespace WpfApplication1
 
             Match m = r.Match(query);
 
-            InfoAboutError inf = null;
+            InfoAboutError inf = new InfoAboutError();
             if (m.Groups.Count > 1)
             {
                 Group g = m.Groups[1];
@@ -113,7 +115,6 @@ namespace WpfApplication1
                                     inf = new InfoAboutError(true, "", 0, query.ToCharArray()[0]);
 
                         }
-                            
                     }
                     else
                     {
@@ -170,8 +171,6 @@ namespace WpfApplication1
                             if (indexLenth < query.ToCharArray().Length &&
                                 (isKey(query.ToCharArray()[indexLenth]) &&
                                 !hasVar)
-                                //&&query.ToCharArray()[indexLenth]!='?'
-                                //&&query.ToCharArray()[indexLenth]!=']'
                                )
                             {
                                 indexLenth++;
@@ -224,6 +223,13 @@ namespace WpfApplication1
                 else
                 {
                     inf = new InfoAboutError(false, query);
+                    string nameGroup = "NameVar";
+                    Group gr = m.Groups[nameGroup];
+                    for (int j = 0; j < gr.Captures.Count; j++)
+                    {
+                        Capture c = gr.Captures[j];
+                        listVars.Add(c.Value);
+                    }
                 }
                 
 
@@ -282,7 +288,42 @@ namespace WpfApplication1
             str += "";
 
         }
-        
+
+
+        public InfoAboutError getTrueQuery(string query, List<string> listVars)
+        {
+            RegAnalisator ra = new RegAnalisator();
+            InfoAboutError inf = new InfoAboutError();
+            //float?[,,,] a, b; ; ; ;
+            ra.formatString(ref query);
+
+            string[] masStr = query.Split(';');
+            int countString = masStr.Length;
+            if (masStr[masStr.Length - 1] == "")
+                countString--;
+            for (int i = 0; i < countString; i++)
+            {
+                string q = masStr[i];
+                if (i == countString - 1)
+                {
+                    if (query.ToCharArray()[query.Length - 1] == ';')
+                        q += ";";
+                }
+                else q += ";";
+                inf = ra.checkString(q, listVars);
+                if (inf.error == true)
+                {
+                    inf.indexLineError = i;
+                    inf.trueQuery += inf.str;
+                    break;
+                }
+                inf.trueQuery += q;
+            }
+
+            return inf;
+        }
+
+
 
     }
 
