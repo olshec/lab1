@@ -19,7 +19,7 @@ namespace WpfApplication1
 
         // public string message;
 
-        public InfoAboutError(bool er, string s, int positionError=-1, char errorChar='-')
+        public InfoAboutError(bool er, string s, int positionError=-1, char errorChar=';')
         {
             error = er;
             str = s;
@@ -35,7 +35,7 @@ namespace WpfApplication1
             this.error = false;
             this.str = "";
             this.positionError = -1;
-            this.errorChar = '-';
+            this.errorChar = ';';
             this.indexLineError = -1;
             this.trueQuery = "";
         }

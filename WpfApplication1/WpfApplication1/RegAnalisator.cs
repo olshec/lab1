@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 namespace WpfApplication1
 {
 
-  public  class RegAnalisator
+    public class RegAnalisator
     {
 
         string[] masNameTypeWithNull = new string[] {"sbyte","short","int","long","byte","ushort","uint",
@@ -33,19 +33,12 @@ namespace WpfApplication1
             return false;
         }
 
-        private bool isUseKey(char chekChar)
+        private bool isUserKey(char chekChar)
         {
-            char[] listKey = new char[] { '!', '`', '~', '\'',
-                '.', '\\', '/','-','+','@','#','№','$','%','^',':',
-            '&','*','(',')','{','}','|'};
-            foreach (char c in listKey)
-            {
-                if (c == chekChar)
-                {
-                    return true;
-                }
-            }
-            return false;
+            if (Char.IsDigit(chekChar) || Char.IsLetter(chekChar)
+                || chekChar=='_' || isKey(chekChar))
+                return false;
+            return true;
         }
 
         private bool isKey(char chekChar)
@@ -73,14 +66,14 @@ namespace WpfApplication1
             (
                 (
                     (          (?<=^)                          (?<NameType>" + nameAllType + @")         (?=\?|\[|\s)       )    |
-                    (          (?<=" + nameTypeWithNull + @")  (\?)                                      (?=\[|"+symbolInVar+@")         )    |
-                    (          (?<=" + nameAllType + @")       (\s)                                      (?="+symbolInVar+@")            )    |
+                    (          (?<=" + nameTypeWithNull + @")  (\?)                                      (?=\[|" + symbolInVar + @")         )    |
+                    (          (?<=" + nameAllType + @")       (\s)                                      (?=" + symbolInVar + @")            )    |
                     (          (?<=\?|" + nameAllType + @")    (?<Sk>\[)                                 (?=,|\])           )    |
-                    (          (?<="+symbolInVar+@"|\[)                     (,)                                       (?=,|\]|"+symbolInVar+@")       )    |
+                    (          (?<=" + symbolInVar + @"|\[)                     (,)                                       (?=,|\]|" + symbolInVar + @")       )    |
                     (          (?<=,)                          (?(Sk),)                                  (?=,|\])           )    |
-                    (          (?<=,|\[)                       (?<-Sk>\])                                (?="+symbolInVar+@")            )    |
-                    (          (?<=\?|\s|\]|,)  (?(Sk)(?!))    (?<NameVar>"+symbolInVar+@")                           (?=,|;)            )    |
-                    (          (?<="+symbolInVar+@")         (?(Sk)(?!))    (;)                                       (?=;|$)            )    |
+                    (          (?<=,|\[)                       (?<-Sk>\])                                (?=" + symbolInVar + @")            )    |
+                    (          (?<=\?|\s|\]|,)  (?(Sk)(?!))    (?<NameVar>" + symbolInVar + @")                           (?=,|;)            )    |
+                    (          (?<=" + symbolInVar + @")         (?(Sk)(?!))    (;)                                       (?=;|$)            )    |
                 )+
             )";
 
@@ -96,12 +89,13 @@ namespace WpfApplication1
 
                 if (g.Value.Length < query.Length)
                 {
-                    if (g.Value.Length == 0) {
+                    if (g.Value.Length == 0)
+                    {
                         if (query == ";")
                             inf = new InfoAboutError(false, query);
                         else
                         {
-                            
+
                             if (isKey(query.ToCharArray()[query.Length - 1]))
                             {
                                 bool hasNameType = false;
@@ -115,22 +109,24 @@ namespace WpfApplication1
                                 }
                                 //int]
                                 if (hasNameType)
-                                        inf = new InfoAboutError(true, "", query.Length,
-                                    query.ToCharArray()[query.Length - 1]);
+                                    inf = new InfoAboutError(true, "", query.Length,
+                                query.ToCharArray()[query.Length - 1]);
                                 //dfg,dfg,dg
                                 else
+                                {
                                     inf = new InfoAboutError(true, "", 0,
                                     query.ToCharArray()[0]);
+                                }
                             }
-                                
-                            
+
+
                             else
                                 //int
                                 if (isType(query))
-                                    inf = new InfoAboutError(true, "", query.Length + 1);
-                                //integreg
-                                else
-                                    inf = new InfoAboutError(true, "", 0, query.ToCharArray()[0]);
+                                inf = new InfoAboutError(true, "", query.Length + 1);
+                            //integreg
+                            else
+                                inf = new InfoAboutError(true, "", 0, query.ToCharArray()[0]);
 
                         }
                     }
@@ -138,7 +134,7 @@ namespace WpfApplication1
                     {
                         bool hasVar = false;
                         string nameGroup = "NameVar";
-                        Group  gr = m.Groups[nameGroup];
+                        Group gr = m.Groups[nameGroup];
                         for (int j = 0; j < gr.Captures.Count; j++)
                         {
                             hasVar = true;
@@ -146,26 +142,26 @@ namespace WpfApplication1
                             listVars.Add(c.Value);
                         }
 
-                       // bool hasNameType = false;
+                        // bool hasNameType = false;
                         string nameGroup2 = "NameType";
                         Group gr2 = m.Groups[nameGroup2];
                         for (int j = 0; j < gr2.Captures.Count; j++)
                         {
-                         //   hasNameType = true;
+                            //   hasNameType = true;
                             Capture c = gr2.Captures[j];
                             listType.Add(c.Value);
                         }
 
-                        int indexLenth = g.Value.Length-1;
+                        int indexLenth = g.Value.Length - 1;
                         if (query.ToCharArray()[indexLenth] == ' ')
                         {
                             indexLenth++;
                             string nameVar = "";
-                            while (indexLenth<query.ToCharArray().Length)
+                            while (indexLenth < query.ToCharArray().Length)
                             {
                                 if (query.ToCharArray()[indexLenth] != ' '
                                     && !isKey(query.ToCharArray()[indexLenth])
-                                    && !isUseKey(query.ToCharArray()[indexLenth]))
+                                    && !isUserKey(query.ToCharArray()[indexLenth]))
                                 {
                                     nameVar += query.ToCharArray()[indexLenth];
                                     indexLenth++;
@@ -174,23 +170,23 @@ namespace WpfApplication1
                             }
                             listVars.Add(nameVar);
 
-                            while (indexLenth < query.ToCharArray().Length&&
+                            while (indexLenth < query.ToCharArray().Length &&
                                 query.ToCharArray()[indexLenth] == ' ')
                                 indexLenth++;
 
-                            if(indexLenth < query.ToCharArray().Length)
+                            if (indexLenth < query.ToCharArray().Length)
                                 inf = new InfoAboutError(true,
                                new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
                                query.ToCharArray()[indexLenth]);
                             else
-                            inf = new InfoAboutError(true,
-                               new String(query.ToCharArray(), 0, indexLenth), indexLenth+1);
+                                inf = new InfoAboutError(true,
+                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
                         }
-                        
+
                         else
                         {
                             //if(!isKey(query.ToCharArray()[indexLenth]))
-                                indexLenth++;
+                            indexLenth++;
                             while (indexLenth < query.ToCharArray().Length &&
                                 query.ToCharArray()[indexLenth] == ' ')
                                 indexLenth++;
@@ -201,18 +197,30 @@ namespace WpfApplication1
                                 !hasVar)
                                )
                             {
-                                indexLenth++;
-                                while (indexLenth < query.ToCharArray().Length &&
-                                query.ToCharArray()[indexLenth] == ' ')
-                                    indexLenth++;
-                                if (indexLenth < query.ToCharArray().Length)
-                                    inf = new InfoAboutError(true,
-                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
+                                //string? object?
+                                if (query.ToCharArray()[indexLenth] == '?'
+                                    && indexLenth - 6 >= 0)
+                                {
+                                    string nameType = query.Substring(indexLenth - 6, 6);
+                                    if (isType(nameType))
+                                        inf = new InfoAboutError(true,
+                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth+1,
                                    query.ToCharArray()[indexLenth]);
+                                }
                                 else
-                                    inf = new InfoAboutError(true,
-                                    new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
-
+                                {
+                                    indexLenth++;
+                                    while (indexLenth < query.ToCharArray().Length &&
+                                    query.ToCharArray()[indexLenth] == ' ')
+                                        indexLenth++;
+                                    if (indexLenth < query.ToCharArray().Length)
+                                        inf = new InfoAboutError(true,
+                                       new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
+                                       query.ToCharArray()[indexLenth]);
+                                    else
+                                        inf = new InfoAboutError(true,
+                                        new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
+                                }
                             }
                             //int?[] abv rrr
                             else
@@ -222,7 +230,7 @@ namespace WpfApplication1
                                 {
                                     if (query.ToCharArray()[indexLenth] != ' '
                                         && !isKey(query.ToCharArray()[indexLenth])
-                                        && !isUseKey(query.ToCharArray()[indexLenth])
+                                        && !isUserKey(query.ToCharArray()[indexLenth])
                                         )
                                     {
                                         nameVar += query.ToCharArray()[indexLenth];
@@ -236,7 +244,7 @@ namespace WpfApplication1
                                     indexLenth++;
                                 listVars.Add(nameVar);
                                 if (indexLenth < query.ToCharArray().Length
-                                    && query.ToCharArray()[indexLenth]==',')
+                                    && query.ToCharArray()[indexLenth] == ',')
                                 {
                                     indexLenth++;
                                     while (indexLenth < query.ToCharArray().Length &&
@@ -249,20 +257,20 @@ namespace WpfApplication1
                                 }
                                 else
                                     //int j, b d;
-                                    if(indexLenth< query.ToCharArray().Length)
-                                        inf = new InfoAboutError(true,
-                                            new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
-                                            query.ToCharArray()[indexLenth]);
-                                    //int j, d d
-                                    else
-                                        inf = new InfoAboutError(true,
-                                            new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
+                                    if (indexLenth < query.ToCharArray().Length)
+                                    inf = new InfoAboutError(true,
+                                        new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
+                                        query.ToCharArray()[indexLenth]);
+                                //int j, d d
+                                else
+                                    inf = new InfoAboutError(true,
+                                        new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
 
                             }
 
                         }
                     }
-                        
+
                 }
                 else
                 {
@@ -285,9 +293,9 @@ namespace WpfApplication1
                     }
 
                 }
-                
 
-                
+
+
                 return inf;
             }
             return null;
@@ -297,7 +305,7 @@ namespace WpfApplication1
 
 
 
-        
+
 
         public void formatString(ref string str)
         {
@@ -331,8 +339,8 @@ namespace WpfApplication1
                         (!isKey(masString[i].ToCharArray()[masString[i].Length - 1]) &&
                         !isKey(masString[i + 1].ToCharArray()[0]))
                         ||
-                        (isUseKey(masString[i].ToCharArray()[masString[i].Length - 1])||
-                        isUseKey(masString[i + 1].ToCharArray()[0]))
+                        (isUserKey(masString[i].ToCharArray()[masString[i].Length - 1]) ||
+                        isUserKey(masString[i + 1].ToCharArray()[0]))
                         )
                         newString += " ";
                     newString += masString[i + 1];
@@ -364,7 +372,7 @@ namespace WpfApplication1
                         q += ";";
                 }
                 else q += ";";
-                inf = ra.checkString(q, listVars,listTypes);
+                inf = ra.checkString(q, listVars, listTypes);
                 if (inf.error == true)
                 {
                     inf.indexLineError = i;
