@@ -20,9 +20,18 @@ namespace WpfApplication1
                "ulong","float","double","decimal","bool","char", "string", "object" };
 
 
+
+        public bool hasVarInList(string nameVar,List<string> listVars)
+        {
+            foreach (string s in listVars)
+                if (s == nameVar)
+                    return true;
+            return false;
+        }
+
+
         private bool isType(string str)
         {
-            //char[] listReplaceString = new char[] { '?', '[', ']', ',', ';' };
             foreach (string s in masNameAllType)
             {
                 if (s == str)

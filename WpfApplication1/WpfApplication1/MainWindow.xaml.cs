@@ -53,16 +53,27 @@ namespace WpfApplication1
             string query = textBox.Text;
 
             InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
-           
 
-            richTextBox.AppendText(Environment.NewLine + "trueQuery: "+inf.trueQuery);
-            richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
-            richTextBox.AppendText(Environment.NewLine + "error position: " + inf.positionError);
-            richTextBox.AppendText(Environment.NewLine + "error symbol: " + inf.errorChar);
+            for(int i=0;i<listVars.Count;i++)
+                for(int j=0;j< listVars.Count;j++)
+                {
+                    if (listVars[i]==listVars[j] && i!=j)
+                    {
+                        int positionFirstVariable = query.IndexOf(listVars[i]);
+                        int positionDoubleVariable = query.IndexOf(listVars[i],
+                            positionFirstVariable+1);
+                        inf.error = true;
+                        inf.errorChar = listVars[i].ToCharArray()[0];
+                        inf.indexLineError = -10000;//=======================
+                        inf.positionError = positionDoubleVariable+1;
+                        inf.trueQuery = query.Substring(0, positionDoubleVariable);
+                    }
+                }
+            
 
             richTextBox.AppendText(Environment.NewLine + "vars: ");
             foreach (string s in listVars)
-                if(s!="")
+                if (s != "")
                     richTextBox.AppendText(s + ", ");
 
             richTextBox.AppendText(Environment.NewLine + "Types: ");
@@ -70,6 +81,13 @@ namespace WpfApplication1
                 if (s != "")
                     richTextBox.AppendText(s + ", ");
             richTextBox.AppendText(Environment.NewLine);
+
+            richTextBox.AppendText(Environment.NewLine + "trueQuery: "+inf.trueQuery);
+            richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
+            richTextBox.AppendText(Environment.NewLine + "error position: " + inf.positionError);
+            richTextBox.AppendText(Environment.NewLine + "error symbol: " + inf.errorChar);
+
+            
 
         }
 
