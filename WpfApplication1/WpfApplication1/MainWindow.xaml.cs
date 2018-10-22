@@ -54,22 +54,7 @@ namespace WpfApplication1
 
             InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
 
-            for(int i=0;i<listVars.Count;i++)
-                for(int j=0;j< listVars.Count;j++)
-                {
-                    if (listVars[i]==listVars[j] && i!=j)
-                    {
-                        int positionFirstVariable = query.IndexOf(listVars[i]);
-                        int positionDoubleVariable = query.IndexOf(listVars[i],
-                            positionFirstVariable+1);
-                        inf.error = true;
-                        inf.errorChar = listVars[i].ToCharArray()[0];
-                        inf.indexLineError = -10000;//=======================
-                        inf.positionError = positionDoubleVariable+1;
-                        inf.trueQuery = query.Substring(0, positionDoubleVariable);
-                    }
-                }
-            
+            ra.findDoubleVariable(ref inf, listVars);
 
             richTextBox.AppendText(Environment.NewLine + "vars: ");
             foreach (string s in listVars)

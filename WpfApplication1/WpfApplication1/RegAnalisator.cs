@@ -20,6 +20,26 @@ namespace WpfApplication1
                "ulong","float","double","decimal","bool","char", "string", "object" };
 
 
+        public InfoAboutError findDoubleVariable(ref InfoAboutError inf,List<string> listVars)
+        {
+            string query = inf.trueQuery;
+            for (int i = 0; i < listVars.Count; i++)
+                for (int j = 0; j < listVars.Count; j++)
+                {
+                    if (listVars[i] == listVars[j] && i != j)
+                    {
+                        int positionFirstVariable = query.IndexOf(listVars[i]);
+                        int positionDoubleVariable = query.IndexOf(listVars[i],
+                            positionFirstVariable + 1);
+                        inf.error = true;
+                        inf.errorChar = listVars[i].ToCharArray()[0];
+                        inf.indexLineError = -10000;//=======================
+                        inf.positionError = positionDoubleVariable + 1;
+                        inf.trueQuery = query.Substring(0, positionDoubleVariable);
+                    }
+                }
+            return inf;
+        }
 
         public bool hasVarInList(string nameVar,List<string> listVars)
         {
@@ -69,7 +89,7 @@ namespace WpfApplication1
             string nameTypeNotNull = String.Join("|", masNameTypeNotNull);
             string nameAllType = String.Join("|", masNameAllType);
 
-            string symbolInVar = "[0-9a-zA-Z_]+";
+            string symbolInVar = "[a-zA-Z_]+[0-9]*";
 
             string pattern = @"^
             (
