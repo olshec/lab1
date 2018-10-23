@@ -34,6 +34,7 @@ namespace NUnit.Tests2
         [TestCase("int j; int b d;", 'd')]
         //end tests without symbol ','
 
+        
         [TestCase("float?[,,,] b1!,a2,v3,b1;", '!')]
         [TestCase("float !?[,,,] b1,a2,v3,b1;", '!')]
         [TestCase("float?![,,,] b1,a2,v3,b1;", '!')]
@@ -50,7 +51,8 @@ namespace NUnit.Tests2
         [TestCase("string b1,a2; string v3,a2;", 'a')]
         [TestCase("float?[,,,] b1,a2,v3; string b1;", 'b')]
 
-        public void TestGetTrueQuery(string query, char errorSymbol)
+
+        public void Test_GetErrorSymbol(string query, char errorSymbol)
         {
 
             RegAnalisator ra = new RegAnalisator();
@@ -63,7 +65,30 @@ namespace NUnit.Tests2
         }
 
 
-        
+
+
+        [TestCase("string b1,a2,v3;", false)]
+        [TestCase("object b1,a2,v3;", false)]
+        [TestCase("string[,,,] b1,a2,v3;", false)]
+        [TestCase("object[,,,] b1,a2,v3;", false)]
+        [TestCase("int[,,,] b1,a2,v3;", false)]
+        [TestCase("bool[,,,] b1,a2,v3;", false)]
+        [TestCase("int?[,,,] b1,a2,v3;", false)]
+        [TestCase("bool?[,,,] b1,a2,v3;", false)]
+        [TestCase("int? b1,a2,v3;", false)]
+        [TestCase("bool? b1,a2,v3;", false)]
+        public void Test_HasError(string query, bool hasError)
+        {
+
+            RegAnalisator ra = new RegAnalisator();
+            List<string> listVars = new List<string>();
+            List<string> listTypes = new List<string>();
+
+            InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
+
+            Assert.AreEqual(inf.error, hasError);
+        }
+
         //public void testFindDoubleVariable(string query, char errorSymbol)
         //{
         //    RegAnalisator ra = new RegAnalisator();
