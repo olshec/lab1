@@ -12,20 +12,45 @@ namespace NUnit.Tests2
     [TestFixture]
     public class TestClass
     {
-        [TestCase("int ! , a;",'!',5)]
-        [TestCase("int !b , a;", '!',5)]
-        [TestCase("int b! , a;", '!',6)]
+        //begin tests extract symbol
+        [TestCase("int ! , a;",'!')]
+        [TestCase("int !b , a;", '!')]
+        [TestCase("int b! , a;", '!')]
+        [TestCase("int a, b^ ,c;", '^')]
+        //end tests extract symbol
 
-        [TestCase("dd , a;", 'd', 6)]
-        [TestCase("int b; dd , a;", 'd', 6)]
-        [TestCase("int a, b^ ,c;", '^', 6)]
+        //begin tests without type
+        [TestCase("dd , a;", 'd')]
+        [TestCase("int b; dd , a;", 'd')]
+        [TestCase("int j, b d;", 'd')]
+        [TestCase("int j; b d;", 'b')]
+        //end tests without type
 
-        [TestCase("int j, d", ';', 6)]
-        [TestCase("int j, b d;", 'd', 6)]
+        //begin tests without symbol ';'
+        [TestCase("int j, d", ';')]
+        //end tests without symbol ';'
 
-        [TestCase("int j; b d;", 'b', 6)]
-        [TestCase("int j; int b d;", 'd', 6)]
-        public void TestMethod(string query, char errorSymbol, int position)
+        //begin tests without symbol ','
+        [TestCase("int j; int b d;", 'd')]
+        //end tests without symbol ','
+
+        [TestCase("float?[,,,] b1!,a2,v3,b1;", '!')]
+        [TestCase("float !?[,,,] b1,a2,v3,b1;", '!')]
+        [TestCase("float?![,,,] b1,a2,v3,b1;", '!')]
+        [TestCase("float?[,!,,] b1,a2,v3,b1;", '!')]
+
+        [TestCase("string? b1,a2,v3,b1;", '?')]
+        [TestCase("object?[] b1,a2,v3,b1;", '?')]
+
+
+        [TestCase("int a,b,c,a,d;", 'a')]
+        [TestCase("string b1,a2,v3,a2;", 'a')]
+        [TestCase("float?[,,,] b1,a2,v3,b1;", 'b')]
+        [TestCase("int a,b; string c,a,d;", 'a')]
+        [TestCase("string b1,a2; string v3,a2;", 'a')]
+        [TestCase("float?[,,,] b1,a2,v3; string b1;", 'b')]
+
+        public void TestGetTrueQuery(string query, char errorSymbol)
         {
 
             RegAnalisator ra = new RegAnalisator();
@@ -36,6 +61,22 @@ namespace NUnit.Tests2
 
             Assert.AreEqual(inf.errorChar, errorSymbol);
         }
+
+
+        
+        //public void testFindDoubleVariable(string query, char errorSymbol)
+        //{
+        //    RegAnalisator ra = new RegAnalisator();
+        //    List<string> listVars = new List<string>();
+        //    List<string> listTypes = new List<string>();
+
+        //    InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
+        //    ra.findDoubleVariable(ref inf, listVars);
+
+        //    Assert.AreEqual(inf.errorChar, errorSymbol);
+        //}
+
+
 
     }
 }

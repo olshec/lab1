@@ -20,7 +20,7 @@ namespace WpfApplication1
                "ulong","float","double","decimal","bool","char", "string", "object" };
 
 
-        public InfoAboutError findDoubleVariable(ref InfoAboutError inf,List<string> listVars)
+        public void findDoubleVariable(ref InfoAboutError inf,List<string> listVars)
         {
             string query = inf.trueQuery;
             for (int i = 0; i < listVars.Count; i++)
@@ -31,14 +31,16 @@ namespace WpfApplication1
                         int positionFirstVariable = query.IndexOf(listVars[i]);
                         int positionDoubleVariable = query.IndexOf(listVars[i],
                             positionFirstVariable + 1);
+                        if (positionDoubleVariable == -1)
+                            positionDoubleVariable = positionFirstVariable;
                         inf.error = true;
                         inf.errorChar = listVars[i].ToCharArray()[0];
-                        inf.indexLineError = -10000;//=======================
+                        inf.indexLineError = -1;//=======================
                         inf.positionError = positionDoubleVariable + 1;
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
                     }
                 }
-            return inf;
+            //return inf;
         }
 
         public bool hasVarInList(string nameVar,List<string> listVars)
@@ -402,6 +404,7 @@ namespace WpfApplication1
                 }
                 else q += ";";
                 inf = ra.checkString(q, listVars, listTypes);
+                
                 if (inf.error == true)
                 {
                     inf.indexLineError = i;
@@ -409,6 +412,14 @@ namespace WpfApplication1
                     break;
                 }
                 inf.trueQuery += q;
+
+                findDoubleVariable(ref inf, listVars);
+                if (inf.error == true)
+                {
+                    inf.indexLineError = i;
+                    break;
+                }
+
             }
 
             return inf;

@@ -54,7 +54,7 @@ namespace WpfApplication1
 
             InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
 
-            ra.findDoubleVariable(ref inf, listVars);
+            //ra.findDoubleVariable(ref inf, listVars);
 
             richTextBox.AppendText(Environment.NewLine + "vars: ");
             foreach (string s in listVars)
