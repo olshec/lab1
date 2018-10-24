@@ -77,7 +77,7 @@ namespace NUnit.Tests2
         [TestCase("bool?[,,,] b1,a2,v3;", false)]
         [TestCase("int? b1,a2,v3;", false)]
         [TestCase("bool? b1,a2,v3;", false)]
-        public void Test_HasError(string query, bool hasError)
+        public void Test_QueryWithoutError(string query, bool hasError)
         {
 
             RegAnalisator ra = new RegAnalisator();
@@ -89,17 +89,8 @@ namespace NUnit.Tests2
             Assert.AreEqual(inf.error, hasError);
         }
 
-        //public void testFindDoubleVariable(string query, char errorSymbol)
-        //{
-        //    RegAnalisator ra = new RegAnalisator();
-        //    List<string> listVars = new List<string>();
-        //    List<string> listTypes = new List<string>();
 
-        //    InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
-        //    ra.findDoubleVariable(ref inf, listVars);
 
-        //    Assert.AreEqual(inf.errorChar, errorSymbol);
-        //}
 
 
 

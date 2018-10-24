@@ -20,7 +20,7 @@ namespace WpfApplication1
                "ulong","float","double","decimal","bool","char", "string", "object" };
 
 
-        public void findDoubleVariable(ref InfoAboutError inf,List<string> listVars)
+        private void findDoubleVariable(ref InfoAboutError inf, List<string> listVars)
         {
             string query = inf.trueQuery;
             for (int i = 0; i < listVars.Count; i++)
@@ -43,7 +43,7 @@ namespace WpfApplication1
             //return inf;
         }
 
-        public bool hasVarInList(string nameVar,List<string> listVars)
+        private bool hasVarInList(string nameVar, List<string> listVars)
         {
             foreach (string s in listVars)
                 if (s == nameVar)
@@ -67,7 +67,7 @@ namespace WpfApplication1
         private bool isUserKey(char chekChar)
         {
             if (Char.IsDigit(chekChar) || Char.IsLetter(chekChar)
-                || chekChar=='_' || isKey(chekChar))
+                || chekChar == '_' || isKey(chekChar))
                 return false;
             return true;
         }
@@ -85,7 +85,7 @@ namespace WpfApplication1
             return false;
         }
 
-        public InfoAboutError checkString(string query, List<string> listVars, List<string> listType)
+        private InfoAboutError checkString(string query, List<string> listVars, List<string> listType)
         {
             string nameTypeWithNull = String.Join("|", masNameTypeWithNull);
             string nameTypeNotNull = String.Join("|", masNameTypeNotNull);
@@ -235,7 +235,7 @@ namespace WpfApplication1
                                     string nameType = query.Substring(indexLenth - 6, 6);
                                     if (isType(nameType))
                                         inf = new InfoAboutError(true,
-                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth+1,
+                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
                                    query.ToCharArray()[indexLenth]);
                                 }
                                 else
@@ -338,7 +338,7 @@ namespace WpfApplication1
 
 
 
-        public void formatString(ref string str)
+        private void formatString(ref string str)
         {
             string[] listReplaceString = new string[] { "\n", "  " };
             foreach (string s in listReplaceString)
@@ -383,6 +383,49 @@ namespace WpfApplication1
         }
 
 
+        private void findRealPositionError(ref InfoAboutError inf,
+            string sourceQuery, string errorSymbol)
+        {
+            string[] masStr = sourceQuery.Split(';');
+            int countString = masStr.Length;
+            if (masStr[masStr.Length - 1] == "")
+                countString--;
+            for (int i = 0; i < countString; i++)
+            {
+                string q = masStr[i];
+                if (i == countString - 1)
+                {
+                    if (sourceQuery.ToCharArray()[sourceQuery.Length - 1] == ';')
+                        q += ";";
+                }
+                else q += ";";
+
+                int positionLineError = 0;
+                int positionError = 0;
+                if (i<inf.indexLineError)
+                {
+                    char[] masCharQuery = masStr[i].ToCharArray();
+                    foreach(char c in masCharQuery)
+                    {
+                        if (c == '\n')
+                        {
+                            positionError = 0;
+                            positionLineError++;
+                        }
+                        else
+                            positionError++;
+                    }
+                }
+                else
+                {
+                    //write here
+                    break;
+                }
+
+            }
+
+        }
+
         public InfoAboutError getTrueQuery(string query, List<string> listVars, List<string> listTypes)
         {
             RegAnalisator ra = new RegAnalisator();
@@ -404,7 +447,7 @@ namespace WpfApplication1
                 }
                 else q += ";";
                 inf = ra.checkString(q, listVars, listTypes);
-                
+
                 if (inf.error == true)
                 {
                     inf.indexLineError = i;
