@@ -10,13 +10,13 @@ namespace WpfApplication1
     {
         public bool error;
         public string str;
-        public int positionError;
         public char errorChar;
-
 
         public int indexLineError;
         public string trueQuery;
 
+        public int positionError;
+        public int positionLineError;
         // public string message;
 
         public InfoAboutError(bool er, string s, int positionError=-1, char errorChar=';')
@@ -24,19 +24,23 @@ namespace WpfApplication1
             error = er;
             str = s;
             this.positionError = positionError;
+            positionLineError = 0;
             this.errorChar = errorChar;
 
-            this.indexLineError = -1;
+            this.indexLineError = 0;
             this.trueQuery = "";
+
+            //indexLineError = 0;
         }
 
         public InfoAboutError()
         {
             this.error = false;
             this.str = "";
-            this.positionError = -1;
+            this.positionError = 0;
+            positionLineError = 0;
             this.errorChar = ';';
-            this.indexLineError = -1;
+            this.indexLineError = 0;
             this.trueQuery = "";
         }
 

@@ -384,46 +384,103 @@ namespace WpfApplication1
 
 
         private void findRealPositionError(ref InfoAboutError inf,
-            string sourceQuery, string errorSymbol)
+            string sourceQuery)
         {
+            int positionLineError = inf.positionLineError;
+            int positionError = inf.positionError;
+
             string[] masStr = sourceQuery.Split(';');
             int countString = masStr.Length;
-            if (masStr[masStr.Length - 1] == "")
-                countString--;
-            for (int i = 0; i < countString; i++)
+            //if (masStr[masStr.Length - 1] == "")
+            //    countString--;
+            for (int i = masStr.Length - 1; i >= 0; i--)
+                if (masStr[masStr.Length - 1] == "")
+                    countString--;
+            if (inf.errorChar == ';')
             {
-                string q = masStr[i];
-                if (i == countString - 1)
+                char[] masCharQuery = sourceQuery.ToCharArray();
+                foreach (char c in masCharQuery)
                 {
-                    if (sourceQuery.ToCharArray()[sourceQuery.Length - 1] == ';')
-                        q += ";";
-                }
-                else q += ";";
-
-                int positionLineError = 0;
-                int positionError = 0;
-                if (i<inf.indexLineError)
-                {
-                    char[] masCharQuery = masStr[i].ToCharArray();
-                    foreach(char c in masCharQuery)
+                    if (c == '\n')
                     {
-                        if (c == '\n')
-                        {
-                            positionError = 0;
-                            positionLineError++;
-                        }
-                        else
-                            positionError++;
+                        positionError = 0;
+                        positionLineError++;
                     }
+                    else
+                        positionError++;
                 }
-                else
+                positionError++;
+                // inf.positionLineError = positionLineError;
+                // inf.positionError = positionError;
+            }
+
+            else
+            {
+
+                for (int i = 0; i < countString; i++)
                 {
-                    //write here
-                    break;
+                    string q = masStr[i];
+                    if (i == countString - 1)
+                    {
+                        if (sourceQuery.ToCharArray()[sourceQuery.Length - 1] == ';')
+                            q += ";";
+                    }
+                    else q += ";";
+
+
+                    char[] masCharQuery = q.ToCharArray();
+                    if (i < inf.indexLineError)
+                    {
+                        // masCharQuery = masStr[i].ToCharArray();
+                        foreach (char c in masCharQuery)
+                        {
+                            if (c == '\n')
+                            {
+                                positionError = 0;
+                                positionLineError++;
+                            }
+                            else
+                                positionError++;
+                        }
+                    }
+                    else
+                    {
+                        if (q == ";")
+                            positionError++;
+                        else
+                        {
+                            char[] masTrueCharQuery = inf.trueQuery.ToCharArray();
+                            int positionInSplit = 0;
+                            for (int j = 0; j < masTrueCharQuery.Length; j++)
+                            {
+                                while (masCharQuery[positionInSplit] != masTrueCharQuery[j])
+                                {
+                                    char c = masCharQuery[positionInSplit];
+                                    if (c == '\n')
+                                    {
+                                        positionError = 0;
+                                        positionLineError++;
+                                    }
+                                    else
+                                        positionError++;
+                                    positionInSplit++;
+                                }
+                            }
+                            //positionError++;
+                            while (masCharQuery[positionInSplit] != inf.errorChar)
+                            { positionInSplit++; positionError++; }
+                            //positionError += positionInSplit;
+                            positionError++;
+                            break;
+                        }
+                    }
+
                 }
 
             }
 
+            inf.positionError = positionError;
+            inf.positionLineError = positionLineError;
         }
 
         public InfoAboutError getTrueQuery(string query, List<string> listVars, List<string> listTypes)
@@ -431,6 +488,7 @@ namespace WpfApplication1
             RegAnalisator ra = new RegAnalisator();
             InfoAboutError inf = new InfoAboutError();
             //float?[,,,] a, b; ; ; ;
+            string queryForFindPosition = query;
             ra.formatString(ref query);
 
             string[] masStr = query.Split(';');
@@ -452,6 +510,7 @@ namespace WpfApplication1
                 {
                     inf.indexLineError = i;
                     inf.trueQuery += inf.str;
+                    findRealPositionError(ref inf, queryForFindPosition);
                     break;
                 }
                 inf.trueQuery += q;
@@ -460,6 +519,7 @@ namespace WpfApplication1
                 if (inf.error == true)
                 {
                     inf.indexLineError = i;
+                    findRealPositionError(ref inf, queryForFindPosition);
                     break;
                 }
 
