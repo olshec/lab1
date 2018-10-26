@@ -16,62 +16,90 @@ namespace NUnit.Tests2
         static object[] DivideCases =
         {
             //begin tests extract symbol
-            new object[] { "int ! , a;",'!',true},
-            new object[] { "int !b , a;", '!',true},
-            new object[] { "int b! , a;", '!',true},
-            new object[] { "int a, b^ ,c;", '^',true},
+            new object[] { "int ! , a;",'!',true, 1, 5},
+            new object[] { "int !b , a;", '!',true, 1, 5},
+            new object[] { "int b! , a;", '!',true, 1, 6},
+            new object[] { "int a, b^ ,c;", '^',true, 1, 9},
             //end tests extract symbol
 
             //begin tests without type
-            new object[] { "dd , a;", 'd',true},
-             new object[] {"int b; dd , a;", 'd',true},
-        new object[] {"int j, b d;", 'd',true},
-        new object[] {"int j; b d;", 'b',true},
+            new object[] { "dd , a;", 'd',true, 1, 1},
+            new object[] {"int b; dd , a;", 'd',true, 1, 8},
+            new object[] {"int j, b d;", 'd',true, 1, 10},
+            new object[] {"int j; b d;", 'b',true, 1, 8},
         //end tests without type
 
         //begin tests without symbol ';'
-        new object[] {"int j, d", ';',true},
+        new object[] {"int j, d", ';',true, 1, 9},
         //end tests without symbol ';'
 
         //begin tests without symbol ','
-        new object[] {"int j; int b d;", 'd',true},
+        new object[] {"int j; int b d;", 'd',true, 1, 14},
         //end tests without symbol ','
 
 
-        new object[] {"float?[,,,] b1!,a2,v3,b1;", '!',true},
-        new object[] {"float !?[,,,] b1,a2,v3,b1;", '!',true},
-        new object[] {"float?![,,,] b1,a2,v3,b1;", '!',true},
-        new object[] {"float?[,!,,] b1,a2,v3,b1;", '!',true},
+        new object[] {"float?[,,,] b1!,a2,v3,b1;", '!',true, 1, 15},
+        new object[] {"float !?[,,,] b1,a2,v3,b1;", '!',true, 1, 7},
+        new object[] {"float?![,,,] b1,a2,v3,b1;", '!',true, 1, 7},
+        new object[] {"float?[,!,,] b1,a2,v3,b1;", '!',true, 1, 9},
 
-        new object[] {"string? b1,a2,v3,b1;", '?',true},
-        new object[] {"object?[] b1,a2,v3,b1;", '?',true},
-
-
-        new object[] {"int a,b,c,a,d;", 'a',true},
-        new object[] {"string b1,a2,v3,a2;", 'a',true},
-        new object[] {"float?[,,,] b1,a2,v3,b1;", 'b',true},
-        new object[] {"int a,b; string c,a,d;", 'a',true},
-        new object[] {"string b1,a2; string v3,a2;", 'a',true},
-        new object[] {"float?[,,,] b1,a2,v3; string b1;", 'b',true},
+        new object[] {"string? b1,a2,v3,b1;", '?',true, 1, 7},
+        new object[] {"object?[] b1,a2,v3,b1;", '?',true, 1, 7},
 
 
-        new object[] {"string b1,a2,v3;", ';' , false},
-        new object[] {"object b1,a2,v3;", ';' , false},
-        new object[] {"string[,,,] b1,a2,v3;", ';' , false},
-        new object[] {"object[,,,] b1,a2,v3;", ';' , false},
-        new object[] {"int[,,,] b1,a2,v3;", ';' , false},
-        new object[] {"bool[,,,] b1,a2,v3;", ';' , false},
-        new object[] {"int?[,,,] b1,a2,v3;", ';' , false},
-        new object[] {"bool?[,,,] b1,a2,v3;", ';' , false},
-        new object[] {"int? b1,a2,v3;", ';' , false},
-        new object[] {"bool? b1,a2,v3;", ';' , false},
+        new object[] {"int a,b,c,a,d;", 'a',true, 1, 11},
+        new object[] {"string b1,a2,v3,a2;", 'a',true, 1, 17},
+        new object[] {"float?[,,,] b1,a2,v3,b1;", 'b',true, 1, 22},
+        new object[] {"int a,b; string c,a,d;", 'a',true, 1, 19},
+        new object[] {"string b1,a2; string v3,a2;", 'a',true, 1, 25},
+        new object[] {"float?[,,,] b1,a2,v3; string b1;", 'b',true, 1, 30},
 
+
+        new object[] {"string b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"object b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"string[,,,] b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"object[,,,] b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"int[,,,] b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"bool[,,,] b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"int?[,,,] b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"bool?[,,,] b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"int? b1,a2,v3;", ';' , false, 0, 0},
+        new object[] {"bool? b1,a2,v3;", ';' , false, 0, 0},
+
+        new object[] { "     string [, ,,] bbb, a2  , uu ;;;"+'\n'+
+             " float a, ff ;; string? s;", '?' , true,2,23},
+        new object[] { "     string [, ,,] bbb, a2  , uu ;;;"+'\n'+
+             " float a, ff ;; "+'\n'+"string? s;", '?' , true,3,7},
+        new object[] { "     string [, ,,] bbb, a2  , uu ;;;"+'\n'+
+             " float a, "+'\n'+"ff ;; string"+'\n'+"? s;", '?' , true,4,1},
+
+        new object[] { "     string! [, ,,] bbb, a2  , uu ;;;"+'\n'+
+             " float a, ff ;; string? s;", 's' , true,1,6},
+        new object[] { "  hhfh   string [, ,,] bbb, a2  , uu ;;;"+'\n'+
+             " float a, ff ;; "+'\n'+"string? s;", 'h' , true,1,3},
+        new object[] { "     string [, ,, ] bbb, &a2  , uu ;;;"+'\n'+
+             " float a, "+'\n'+"ff ;; string"+'\n'+"? s;", '&' , true,1,26},
             };
 
 
 
         [Test, TestCaseSource("DivideCases")]
-        public void Test_GetErrorSymbol(string query, char errorSymbol, bool hasError)
+        public void Test_hasError(string query,
+           char errorSymbol, bool hasError, int positionLine, int positionError)
+        {
+
+            RegAnalisator ra = new RegAnalisator();
+            List<string> listVars = new List<string>();
+            List<string> listTypes = new List<string>();
+
+            InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
+
+            Assert.AreEqual(inf.error, hasError);
+        }
+
+        [Test, TestCaseSource("DivideCases")]
+        public void Test_symbolError(string query, 
+            char errorSymbol, bool hasError, int positionLine, int positionError)
         {
 
             RegAnalisator ra = new RegAnalisator();
@@ -85,7 +113,8 @@ namespace NUnit.Tests2
 
 
         [Test, TestCaseSource("DivideCases")]
-        public void Test_QueryWithoutError(string query, char errorSymbol, bool hasError)
+        public void Test_linePositionError(string query,
+            char errorSymbol, bool hasError, int positionLineError, int positionError)
         {
 
             RegAnalisator ra = new RegAnalisator();
@@ -94,9 +123,22 @@ namespace NUnit.Tests2
 
             InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
 
-            Assert.AreEqual(inf.error, hasError);
+            Assert.AreEqual(inf.positionLineError, positionLineError);
         }
 
+        [Test, TestCaseSource("DivideCases")]
+        public void Test_positionError(string query,
+    char errorSymbol, bool hasError, int positionLineError, int positionError)
+        {
+
+            RegAnalisator ra = new RegAnalisator();
+            List<string> listVars = new List<string>();
+            List<string> listTypes = new List<string>();
+
+            InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
+
+            Assert.AreEqual(inf.positionError, positionError);
+        }
 
 
 
