@@ -442,8 +442,8 @@ namespace WpfApplication1
                     else
                         positionError++;
                 }
-                if(masStr[countString-1].ToCharArray()
-                    [masStr[countString - 1].Length-1] !=';')
+                if(sourceQuery.ToCharArray()
+                    [sourceQuery.Length-1] !=';')
                     positionError++;
                 // inf.positionLineError = positionLineError;
                 // inf.positionError = positionError;
