@@ -386,16 +386,19 @@ namespace WpfApplication1
         private void findRealPositionError(ref InfoAboutError inf,
             string sourceQuery)
         {
-            int positionLineError = inf.positionLineError;
-            int positionError = inf.positionError;
+            int positionLineError = 0;
+            int positionError = 0;
 
             string[] masStr = sourceQuery.Split(';');
             int countString = masStr.Length;
             //if (masStr[masStr.Length - 1] == "")
             //    countString--;
             for (int i = masStr.Length - 1; i >= 0; i--)
-                if (masStr[masStr.Length - 1] == "")
+            {
+                if (masStr[i] == "")
                     countString--;
+                else break;
+            }
             if (inf.errorChar == ';')
             {
                 char[] masCharQuery = sourceQuery.ToCharArray();
@@ -427,6 +430,12 @@ namespace WpfApplication1
                     }
                     else q += ";";
 
+                    if (q == ";")
+                    {
+                        positionError++;
+                        inf.indexLineError++;
+                        continue;
+                    }
 
                     char[] masCharQuery = q.ToCharArray();
                     if (i < inf.indexLineError)
@@ -445,18 +454,15 @@ namespace WpfApplication1
                     }
                     else
                     {
-                        if (q == ";")
-                            positionError++;
-                        else
-                        {
+                       
+                            masCharQuery = masStr[i].ToCharArray();
                             char[] masTrueCharQuery = inf.trueQuery.ToCharArray();
                             int positionInSplit = 0;
                             for (int j = 0; j < masTrueCharQuery.Length; j++)
                             {
                                 while (masCharQuery[positionInSplit] != masTrueCharQuery[j])
                                 {
-                                    char c = masCharQuery[positionInSplit];
-                                    if (c == '\n')
+                                    if (masCharQuery[positionInSplit] == '\n')
                                     {
                                         positionError = 0;
                                         positionLineError++;
@@ -468,11 +474,20 @@ namespace WpfApplication1
                             }
                             //positionError++;
                             while (masCharQuery[positionInSplit] != inf.errorChar)
-                            { positionInSplit++; positionError++; }
+                            {
+                                if (masCharQuery[positionInSplit] == '\n')
+                                {
+                                    positionError = 0;
+                                    positionLineError++;
+                                }
+                                else
+                                    positionError++;
+                                positionInSplit++;
+                            }
                             //positionError += positionInSplit;
                             positionError++;
                             break;
-                        }
+                        
                     }
 
                 }
