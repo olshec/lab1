@@ -29,7 +29,9 @@ namespace WpfApplication1
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            textBox.Text = "     string [, ,,] bbb, a2  , uu ;;;" +'\n'+ " float a ff ;; ";
+            //textBox.Text = "     string [, ,,] bbb, a2  , uu ;;;" +'\n'+ " float a ff ;; ";
+            //textBox.li
+            textBox.Text = '\r' + '\n' + ";    ;" +'\n'+"  ;   " + '\n';
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -56,16 +58,16 @@ namespace WpfApplication1
 
             //ra.findDoubleVariable(ref inf, listVars);
 
-            richTextBox.AppendText(Environment.NewLine + "vars: ");
+            richTextBox.AppendText("vars: ");
             foreach (string s in listVars)
                 if (s != "")
                     richTextBox.AppendText(s + ", ");
-
+            
             richTextBox.AppendText(Environment.NewLine + "Types: ");
             foreach (string s in listTypes)
                 if (s != "")
                     richTextBox.AppendText(s + ", ");
-            richTextBox.AppendText(Environment.NewLine);
+           // richTextBox.AppendText(Environment.NewLine);
 
             richTextBox.AppendText(Environment.NewLine + "has error?: " + inf.error);
             richTextBox.AppendText(Environment.NewLine + "trueQuery: "+inf.trueQuery);
