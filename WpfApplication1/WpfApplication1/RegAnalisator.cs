@@ -495,7 +495,7 @@ namespace WpfApplication1
             }
 
             inf.positionError = positionError;
-            inf.positionLineError = positionLineError;
+            inf.positionLineError = positionLineError+1;
         }
 
         public InfoAboutError getTrueQuery(string query, List<string> listVars, List<string> listTypes)
