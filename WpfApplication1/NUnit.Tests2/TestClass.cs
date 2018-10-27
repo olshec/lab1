@@ -49,6 +49,9 @@ namespace NUnit.Tests2
             new object[] {"int a,b; string c,a,d;", 'a',true, 1, 19},
             new object[] {"string b1,a2; string v3,a2;", 'a',true, 1, 25},
             new object[] {"float?[,,,] b1,a2,v3; string b1;", 'b',true, 1, 30},
+            new object[] { " float[,] c , b;"+'\n'+" " + '\n' +
+                " float a, a; ", 'a' , true,3,11},
+            new object[] { "float a, a; ", 'a' , true,1,10},
             #endregion //double variable
 
             #region //other query with error
@@ -68,9 +71,6 @@ namespace NUnit.Tests2
             new object[] { " ;"+'\n'+" int ; ", ';' , true,2,6},
             new object[] { '\n'+"int; "+'\n', ';' , true,2,4},
             new object[] { '\n' + "int a , a ;", 'a' , true,2,9},
-            new object[] { " float[,] c , b;"+'\n'+" " + '\n' +
-                " float a, a; ", 'a' , true,3,11},
-            new object[] { "float a, a; ", 'a' , true,1,10},
             new object[] { '\n' + "  object  a , " +'\n'+
                 " b1 " + '\n', ';' , true,3,4},
             new object[] { '\t'+ "int "+'\n' +
