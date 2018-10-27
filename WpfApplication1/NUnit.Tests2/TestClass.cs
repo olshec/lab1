@@ -81,6 +81,7 @@ namespace NUnit.Tests2
 
         new object[] { " ; int ; ", ';' , true,1,8},
         new object[] { " ;"+'\n'+" int ; ", ';' , true,2,6},
+
             };
 
 
