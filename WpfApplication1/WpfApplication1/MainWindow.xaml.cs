@@ -29,9 +29,7 @@ namespace WpfApplication1
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            //textBox.Text = "     string [, ,,] bbb, a2  , uu ;;;" +'\n'+ " float a ff ;; ";
-            //textBox.li
-            textBox.Text = '\r' + '\n' + ";    ;" + '\n' + "  ;   " + '\n';
+            textBox.Text = "     string [, ,,] bbb, a2  , uu ;;;" +'\n'+ " float a ff ;; ";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -40,8 +38,8 @@ namespace WpfApplication1
             richTextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
         }
 
-
-
+       
+        
 
 
         private void button2_Click(object sender, RoutedEventArgs e)
@@ -67,14 +65,14 @@ namespace WpfApplication1
             foreach (string s in listTypes)
                 if (s != "")
                     richTextBox.AppendText(s + ", ");
-            // richTextBox.AppendText(Environment.NewLine);
+
 
             richTextBox.AppendText(Environment.NewLine + "has error?: " + inf.error);
-            richTextBox.AppendText(Environment.NewLine + "trueQuery: " + inf.trueQuery);
+            richTextBox.AppendText(Environment.NewLine + "trueQuery: "+inf.trueQuery);
             richTextBox.AppendText(Environment.NewLine + "positionError: " + inf.positionError);
             richTextBox.AppendText(Environment.NewLine + "positionLineError: " + inf.positionLineError);
             richTextBox.AppendText(Environment.NewLine + "error symbol: " + inf.errorChar);
-            // richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
+           // richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
 
 
 

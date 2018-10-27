@@ -40,28 +40,7 @@ namespace WpfApplication1
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
                     }
                 }
-        }
-
-        private void findBadVariable(ref InfoAboutError inf, List<string> listVars)
-        {
-            string query = inf.trueQuery;
-            for (int j = 0; j < masNameAllType.Length; j++)
-                for (int i = 0; i < listVars.Count; i++)
-                {
-                    if (listVars[i] == masNameAllType[j])
-                    {
-                        int positionFirstVariable = query.IndexOf(listVars[i]);
-                        int positionDoubleVariable = query.IndexOf(listVars[i],
-                            positionFirstVariable + 1);
-                        if (positionDoubleVariable == -1)
-                            positionDoubleVariable = positionFirstVariable;
-                        inf.error = true;
-                        inf.errorChar = listVars[i].ToCharArray()[0];
-                        inf.indexLineError = -1;//=======================
-                        inf.positionError = positionDoubleVariable + 1;
-                        inf.trueQuery = query.Substring(0, positionDoubleVariable);
-                    }
-                }
+            //return inf;
         }
 
         private bool hasVarInList(string nameVar, List<string> listVars)
@@ -166,6 +145,11 @@ namespace WpfApplication1
                                 //dfg,dfg,dg
                                 else
                                 {
+                                    string name = query.Substring(0, query.Length - 1);
+                                    if(isType(name))
+                                        inf = new InfoAboutError(true, name, query.Length,
+                                    ';');
+                                    else
                                     inf = new InfoAboutError(true, "", 0,
                                     query.ToCharArray()[0]);
                                 }
@@ -302,18 +286,9 @@ namespace WpfApplication1
                                     while (indexLenth < query.ToCharArray().Length &&
                                     query.ToCharArray()[indexLenth] == ' ')
                                         indexLenth++;
-                                    if (query.Length < indexLenth)
-                                    {
-                                        inf = new InfoAboutError(true,
+                                    inf = new InfoAboutError(true,
                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
                                   query.ToCharArray()[indexLenth]);
-
-                                    }
-                                    else // int a,
-                                    {
-                                        inf = new InfoAboutError(true,
-                                   new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
-                                    }
 
                                 }
                                 else
@@ -370,7 +345,7 @@ namespace WpfApplication1
 
         private void formatString(ref string str)
         {
-            string[] listReplaceString = new string[] { "\t", "\n", "  " };
+            string[] listReplaceString = new string[] { "\n", "  " };
             foreach (string s in listReplaceString)
                 while (str.IndexOf(s) != -1)
                     str = str.Replace(s, " ");
@@ -388,7 +363,7 @@ namespace WpfApplication1
                 }
 
 
-            if (str.Length > 1)
+            if (str.Length > 0)
             {
                 string[] masString = str.Split(' ');
                 string newString = "";
@@ -442,8 +417,7 @@ namespace WpfApplication1
                     else
                         positionError++;
                 }
-                if (sourceQuery.ToCharArray()
-                    [sourceQuery.Length - 1] != ';')
+                if(masCharQuery[masCharQuery.Length-1]!=';')
                     positionError++;
                 // inf.positionLineError = positionLineError;
                 // inf.positionError = positionError;
@@ -486,13 +460,26 @@ namespace WpfApplication1
                     }
                     else
                     {
-
-                        masCharQuery = masStr[i].ToCharArray();
-                        char[] masTrueCharQuery = inf.trueQuery.ToCharArray();
-                        int positionInSplit = 0;
-                        for (int j = 0; j < masTrueCharQuery.Length; j++)
-                        {
-                            while (masCharQuery[positionInSplit] != masTrueCharQuery[j])
+                       
+                            masCharQuery = masStr[i].ToCharArray();
+                            char[] masTrueCharQuery = inf.trueQuery.ToCharArray();
+                            int positionInSplit = 0;
+                            for (int j = 0; j < masTrueCharQuery.Length; j++)
+                            {
+                                while (masCharQuery[positionInSplit] != masTrueCharQuery[j])
+                                {
+                                    if (masCharQuery[positionInSplit] == '\n')
+                                    {
+                                        positionError = 0;
+                                        positionLineError++;
+                                    }
+                                    else
+                                        positionError++;
+                                    positionInSplit++;
+                                }
+                            }
+                            //positionError++;
+                            while (masCharQuery[positionInSplit] != inf.errorChar)
                             {
                                 if (masCharQuery[positionInSplit] == '\n')
                                 {
@@ -503,23 +490,10 @@ namespace WpfApplication1
                                     positionError++;
                                 positionInSplit++;
                             }
-                        }
-                        //positionError++;
-                        while (masCharQuery[positionInSplit] != inf.errorChar)
-                        {
-                            if (masCharQuery[positionInSplit] == '\n')
-                            {
-                                positionError = 0;
-                                positionLineError++;
-                            }
-                            else
-                                positionError++;
-                            positionInSplit++;
-                        }
-                        //positionError += positionInSplit;
-                        positionError++;
-                        break;
-
+                            //positionError += positionInSplit;
+                            positionError++;
+                            break;
+                        
                     }
 
                 }
@@ -527,7 +501,29 @@ namespace WpfApplication1
             }
 
             inf.positionError = positionError;
-            inf.positionLineError = positionLineError + 1;
+            inf.positionLineError = positionLineError+1;
+        }
+
+        private void findBadVariable(ref InfoAboutError inf, List<string> listVars)
+        {
+            string query = inf.trueQuery;
+            for (int j = 0; j < masNameAllType.Length; j++)
+                for (int i = 0; i < listVars.Count; i++)
+                {
+                    if (listVars[i] == masNameAllType[j])
+                    {
+                        int positionFirstVariable = query.IndexOf(listVars[i]);
+                        int positionDoubleVariable = query.IndexOf(listVars[i],
+                            positionFirstVariable + 1);
+                        if (positionDoubleVariable == -1)
+                            positionDoubleVariable = positionFirstVariable;
+                        inf.error = true;
+                        inf.errorChar = listVars[i].ToCharArray()[0];
+                        inf.indexLineError = -1;//=======================
+                        inf.positionError = positionDoubleVariable + 1;
+                        inf.trueQuery = query.Substring(0, positionDoubleVariable);
+                    }
+                }
         }
 
         private void deleteSymbol(ref string str)
@@ -549,7 +545,6 @@ namespace WpfApplication1
             RegAnalisator ra = new RegAnalisator();
             InfoAboutError inf = new InfoAboutError();
             //float?[,,,] a, b; ; ; ;
-
             deleteSymbol(ref query);
 
             string queryForFindPosition = query;
@@ -559,8 +554,6 @@ namespace WpfApplication1
             int countString = masStr.Length;
             if (masStr[masStr.Length - 1] == "")
                 countString--;
-            if (masStr.Length == 1 && masStr[0] == " ")
-                return inf;
             for (int i = 0; i < countString; i++)
             {
                 string q = masStr[i];
