@@ -73,10 +73,14 @@ namespace NUnit.Tests2
             new object[] { "float a, a; ", 'a' , true,1,10},
             new object[] { '\n' + "  object  a , " +'\n'+
                 " b1 " + '\n', ';' , true,3,4},
+            new object[] { '\t'+ "int "+'\n' +
+                '\t'+'\t'+"a,d,c"+'\n'+'\n'+
+                "      a;", 'a' , true, 4, 7},
             new object[] {"float?[,,,] b1!,a2,v3,b1;", '!',true, 1, 15},
             new object[] {"float !?[,,,] b1,a2,v3,b1;", '!',true, 1, 7},
             new object[] {"float?![,,,] b1,a2,v3,b1;", '!',true, 1, 7},
             new object[] {"float?[,!,,] b1,a2,v3,b1;", '!',true, 1, 9},
+
             #endregion //other query with error
 
             #region //query without error
