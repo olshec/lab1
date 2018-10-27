@@ -484,7 +484,8 @@ namespace WpfApplication1
                             int positionInSplit = 0;
                             for (int j = 0; j < masTrueCharQuery.Length; j++)
                             {
-                                while (masCharQuery[positionInSplit] != masTrueCharQuery[j])
+                                while (masCharQuery[positionInSplit] != masTrueCharQuery[j]
+                                && !(masCharQuery[positionInSplit] =='\n' && masTrueCharQuery[j] ==' '))
                                 {
                                     if (masCharQuery[positionInSplit] == '\n')
                                     {

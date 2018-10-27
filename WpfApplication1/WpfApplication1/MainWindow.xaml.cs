@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -39,10 +40,7 @@ namespace WpfApplication1
         }
 
        
-        
-
-
-        private void button2_Click(object sender, RoutedEventArgs e)
+        private void run(string query)
         {
             RegAnalisator ra = new RegAnalisator();
             List<string> listVars = new List<string>();
@@ -50,7 +48,7 @@ namespace WpfApplication1
             //float?[,,,] a, b; ; ; ;
             richTextBox.Document.Blocks.Clear();
 
-            string query = textBox.Text;
+            
 
             InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
 
@@ -68,17 +66,64 @@ namespace WpfApplication1
 
 
             richTextBox.AppendText(Environment.NewLine + "has error?: " + inf.error);
-            richTextBox.AppendText(Environment.NewLine + "trueQuery: "+inf.trueQuery);
+            richTextBox.AppendText(Environment.NewLine + "trueQuery: " + inf.trueQuery);
             richTextBox.AppendText(Environment.NewLine + "positionError: " + inf.positionError);
             richTextBox.AppendText(Environment.NewLine + "positionLineError: " + inf.positionLineError);
             richTextBox.AppendText(Environment.NewLine + "error symbol: " + inf.errorChar);
-           // richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
-
-
+            // richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
 
         }
 
 
+        private void button2_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                char[] mas = textBox.Text.ToCharArray();
+                run(textBox.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Произошла какакя-то ошибка (:",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
 
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            richTextBox.Document.Blocks.Clear();
+            string query = "";
+            Microsoft.Win32.OpenFileDialog of=
+                new Microsoft.Win32.OpenFileDialog();
+            of.ShowDialog();
+            if(of.FileName!="")
+            {
+                File.OpenText(of.FileName);
+                StreamReader sr = File.OpenText(of.FileName);
+                while (true)
+                {
+                    string str = sr.ReadLine();
+                    if (str == null)
+                    {
+                        //sr.Dispose();
+                        sr.Close();
+                        break;
+                    }
+                        
+                    query += str;
+                }
+                try
+                {
+                    run(query);
+                }
+                catch
+                {
+                    MessageBox.Show("Произошла какакя-то ошибка (:", 
+                        "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            
+        }
     }
 }
