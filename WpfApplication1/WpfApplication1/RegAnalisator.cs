@@ -361,10 +361,12 @@ namespace WpfApplication1
 
         private void formatString(ref string str)
         {
-            string[] listReplaceString = new string[] { "\n", "  " };
-            foreach (string s in listReplaceString)
+            char[] listReplaceString = new char[] {'\r','\t','\n'};
+            foreach (char s in listReplaceString)
                 while (str.IndexOf(s) != -1)
-                    str = str.Replace(s, " ");
+                    str = str.Replace(s, ' ');
+            while (str.IndexOf("  ") != -1)
+                    str = str.Replace("  ", " ");
             while (str.IndexOf(";;") != -1)
                 str = str.Replace(";;", ";");
 
