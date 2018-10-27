@@ -1,0 +1,26 @@
+﻿<Window x:Class="WpfApplication1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApplication1"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="731.717" Width="1100.04" Loaded="Window_Loaded">
+    <Grid Loaded="Grid_Loaded">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <RichTextBox x:Name="richTextBox" HorizontalAlignment="Left" Height="355" Margin="240,261,0,0" VerticalAlignment="Top" Width="672" FontSize="16">
+            <FlowDocument>
+                <Paragraph>
+                    <Run Text=""/>
+                </Paragraph>
+            </FlowDocument>
+        </RichTextBox>
+        <Button x:Name="button2" Content="Button" HorizontalAlignment="Left" Margin="75,45,0,0" VerticalAlignment="Top" Width="101" Height="46" Click="button2_Click" RenderTransformOrigin="0.48,-3.815"/>
+        <TextBox x:Name="textBox" HorizontalAlignment="Left" Height="79" Margin="240,12,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="672" FontSize="24" AcceptsReturn="True"/>
+        <TextBox x:Name="textBox1" HorizontalAlignment="Left" Height="43" Margin="240,152,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="672"/>
+        <Button x:Name="button" Content="Button" HorizontalAlignment="Left" Margin="101,152,0,0" VerticalAlignment="Top" Width="75" Height="43" Click="button_Click"/>
+
+    </Grid>
+</Window>
