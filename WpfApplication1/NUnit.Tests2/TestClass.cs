@@ -78,9 +78,15 @@ namespace NUnit.Tests2
              " float a, ff ;; "+'\n'+"string? s;", 'h' , true,1,3},
         new object[] { "     string [, ,, ] bbb, &a2  , uu ;;;"+'\n'+
              " float a, "+'\n'+"ff ;; string"+'\n'+"? s;", '&' , true,1,26},
-
         new object[] { " ; int ; ", ';' , true,1,8},
         new object[] { " ;"+'\n'+" int ; ", ';' , true,2,6},
+        new object[] { '\n'+"int; "+'\n', ';' , true,2,4},
+        new object[] { '\n' + "int a , a ;", 'a' , true,2,9},
+        new object[] { " float[,] c , b;"+'\n'+" " + '\n' +
+            " float a, a; ", 'a' , true,3,11},
+        new object[] { "float a, a; ", 'a' , true,1,10},
+        new object[] { '\n' + "  object  a , " +'\n'+
+            " b1 " + '\n', ';' , true,3,4},
 
             };
 

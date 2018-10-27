@@ -29,6 +29,17 @@ namespace WpfApplication1
                     if (listVars[i] == listVars[j] && i != j)
                     {
                         int positionFirstVariable = query.IndexOf(listVars[i]);
+                        //while cheked space float a,a;
+                        //positionFirstVariable > 0 &&
+                        while (!
+                            (query.ToCharArray()[positionFirstVariable - 1] == ' ' ||
+                            query.ToCharArray()[positionFirstVariable - 1] == ','))
+                        {
+                            positionFirstVariable++;
+                            positionFirstVariable = query.IndexOf(listVars[i], 
+                                positionFirstVariable);
+                        }
+
                         int positionDoubleVariable = query.IndexOf(listVars[i],
                             positionFirstVariable + 1);
                         if (positionDoubleVariable == -1)
@@ -91,7 +102,7 @@ namespace WpfApplication1
             string nameTypeNotNull = String.Join("|", masNameTypeNotNull);
             string nameAllType = String.Join("|", masNameAllType);
 
-            string symbolInVar = "[a-zA-Z_]+[0-9]*";
+            string symbolInVar = "[a-zA-Z_]+[0-9]*[a-zA-Z_]*";
 
             string pattern = @"^
             (
@@ -286,9 +297,14 @@ namespace WpfApplication1
                                     while (indexLenth < query.ToCharArray().Length &&
                                     query.ToCharArray()[indexLenth] == ' ')
                                         indexLenth++;
-                                    inf = new InfoAboutError(true,
-                                  new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
-                                  query.ToCharArray()[indexLenth]);
+                                    if( query.Length> indexLenth)
+                                        inf = new InfoAboutError(true,
+                                            new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
+                                            query.ToCharArray()[indexLenth]);
+                                    else
+                                        inf = new InfoAboutError(true,
+                                        new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
+                                        ';');
 
                                 }
                                 else
