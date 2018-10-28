@@ -20,6 +20,7 @@ namespace WpfApplication1
         public string message;
         // public string message;
 
+
         public InfoAboutError(bool er, string s, int positionError=0, char errorChar=';')
         {
             error = er;
@@ -46,6 +47,21 @@ namespace WpfApplication1
             this.trueQuery = "";
             this.message = "";
         }
+       
+        public InfoAboutError Clone()
+        {
+            InfoAboutError iar = new InfoAboutError();
+            iar.error = this.error;
+            iar.str= this.str;
+            iar.positionError= this.positionError;
+            iar.positionLineError= this.positionLineError;
+            iar.errorChar= this.errorChar;
+            iar.indexLineError= this.indexLineError;
+            iar.trueQuery= this.trueQuery;
+            iar.message= this.message;
+            return iar;
+        }
+
 
 
     }
