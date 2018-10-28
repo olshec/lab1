@@ -49,6 +49,7 @@ namespace WpfApplication1
                         inf.indexLineError = -1;//=======================
                         inf.positionError = positionDoubleVariable + 1;
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
+                        inf.message = listVars[i];
                     }
                 }
             //return inf;

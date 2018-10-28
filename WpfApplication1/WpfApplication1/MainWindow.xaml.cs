@@ -42,34 +42,38 @@ namespace WpfApplication1
        
         private void run(string query)
         {
+            richTextBox.Document.Blocks.Clear();
+
             RegAnalisator ra = new RegAnalisator();
             List<string> listVars = new List<string>();
             List<string> listTypes = new List<string>();
-            //float?[,,,] a, b; ; ; ;
-            richTextBox.Document.Blocks.Clear();
-
-            
+                        
 
             InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
+            
+            //richTextBox.AppendText("vars: ");
+            //foreach (string s in listVars)
+            //    if (s != "")
+            //        richTextBox.AppendText(s + ", ");
 
-            //ra.findDoubleVariable(ref inf, listVars);
-
-            richTextBox.AppendText("vars: ");
-            foreach (string s in listVars)
-                if (s != "")
-                    richTextBox.AppendText(s + ", ");
-
-            richTextBox.AppendText(Environment.NewLine + "Types: ");
-            foreach (string s in listTypes)
-                if (s != "")
-                    richTextBox.AppendText(s + ", ");
+            //richTextBox.AppendText(Environment.NewLine + "Types: ");
+            //foreach (string s in listTypes)
+            //    if (s != "")
+            //        richTextBox.AppendText(s + ", ");
 
 
-            richTextBox.AppendText(Environment.NewLine + "has error?: " + inf.error);
-            richTextBox.AppendText(Environment.NewLine + "trueQuery: " + inf.trueQuery);
-            richTextBox.AppendText(Environment.NewLine + "positionError: " + inf.positionError);
-            richTextBox.AppendText(Environment.NewLine + "positionLineError: " + inf.positionLineError);
-            richTextBox.AppendText(Environment.NewLine + "error symbol: " + inf.errorChar);
+            richTextBox.AppendText("Ошибка: " + ((inf.error)?"Да":"Нет"));
+            //richTextBox.AppendText(Environment.NewLine + "trueQuery: " + inf.trueQuery);
+            if(inf.error)
+            {
+                richTextBox.AppendText(Environment.NewLine + "Строка: " + inf.positionLineError);
+                richTextBox.AppendText(Environment.NewLine + "Позиция: " + inf.positionError);
+                if(inf.message=="")
+                    richTextBox.AppendText(Environment.NewLine + "Неверный символ: " + inf.errorChar);
+                else
+                    richTextBox.AppendText(Environment.NewLine + "Дубликат переменной: " + inf.message);
+            }
+
             // richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
 
         }
