@@ -18,7 +18,6 @@ namespace WpfApplication1
         public int positionError;
         public int positionLineError;
         public string message;
-        // public string message;
 
 
         public InfoAboutError(bool er, string s, int positionError=0, char errorChar=';')
@@ -32,8 +31,6 @@ namespace WpfApplication1
             this.indexLineError = 0;
             this.trueQuery = "";
             this.message = "";
-
-            //indexLineError = 0;
         }
 
         public InfoAboutError()

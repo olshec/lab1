@@ -50,20 +50,8 @@ namespace WpfApplication1
                         
 
             InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
-            
-            //richTextBox.AppendText("vars: ");
-            //foreach (string s in listVars)
-            //    if (s != "")
-            //        richTextBox.AppendText(s + ", ");
-
-            //richTextBox.AppendText(Environment.NewLine + "Types: ");
-            //foreach (string s in listTypes)
-            //    if (s != "")
-            //        richTextBox.AppendText(s + ", ");
-
 
             richTextBox.AppendText("Ошибка: " + ((inf.error)?"Да":"Нет"));
-            //richTextBox.AppendText(Environment.NewLine + "trueQuery: " + inf.trueQuery);
             if(inf.error)
             {
                 richTextBox.AppendText(Environment.NewLine + "Строка: " + inf.positionLineError);
@@ -75,8 +63,6 @@ namespace WpfApplication1
                 else
                     richTextBox.AppendText(Environment.NewLine + "Дубликат переменной: " + inf.message);
             }
-
-            // richTextBox.AppendText(Environment.NewLine + "indexLineError: " + inf.indexLineError);
 
         }
 
@@ -112,7 +98,6 @@ namespace WpfApplication1
                     string str = sr.ReadLine();
                     if (str == null)
                     {
-                        //sr.Dispose();
                         sr.Close();
                         break;
                     }
