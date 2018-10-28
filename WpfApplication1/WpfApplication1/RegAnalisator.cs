@@ -560,6 +560,37 @@ namespace WpfApplication1
             }
         }
 
+        public InfoAboutError getFirstError(InfoAboutError[] masError)
+        {
+           // int minLine = 0;
+           // int minPosition = 0;
+          InfoAboutError iar = new InfoAboutError();
+
+            for (int j = 0; j < masError.Length; j++)
+                for (int i = 0; i < masError.Length-1-j; i++)
+                {
+                    if (masError[i].positionError > masError[i+1].positionError)
+                    {
+                        iar = masError[i];
+                        masError[i] = masError[i + 1];
+                        masError[i + 1] = iar;
+                    }
+                }
+
+            for (int j=0;j<masError.Length;j++)
+            for (int i = 0; i < masError.Length-1-j; i++)
+            {
+                if(masError[i].positionLineError > masError[i+1].positionLineError)
+                {
+                        iar = masError[i];
+                        masError[i] = masError[i+1];
+                        masError[i+1] = iar;
+                    }
+            }
+            return masError[0];     
+
+        }
+
         public InfoAboutError getTrueQuery(string query, List<string> listVars, List<string> listTypes)
         {
             RegAnalisator ra = new RegAnalisator();
@@ -605,31 +636,25 @@ namespace WpfApplication1
                 }
                 inf.trueQuery += q;
 
-                //InfoAboutError inf4 = inf.Clone();
-                
-                InfoAboutError inf2 = inf.Clone();
+                //InfoAboutError masError[1] = inf.Clone();
+                InfoAboutError[] masError = new InfoAboutError[3];
+                masError[2] = inf;
+                masError[0] = inf.Clone();
                 findRealPositionError(ref inf, queryForFindPosition);
-                InfoAboutError inf4 = inf.Clone();
-                findDoubleVariable(ref inf2, listVars);
-                findBadVariable(ref inf4, listVars);
-                
-                if (inf.error || inf2.error || inf4.error)
+                masError[1] = inf.Clone();
+                findDoubleVariable(ref masError[0], listVars);
+                findBadVariable(ref masError[1], listVars);
+                bool hasError = false;
+                foreach(InfoAboutError iar in masError)
+                    if (iar.error)
+                        hasError = true;
+                if (hasError)
                 {
-                    int minLine= Math.Min(inf.positionLineError, inf2.positionLineError);
-                    minLine = Math.Min(minLine, inf4.positionLineError);
-
+                    inf = getFirstError(masError);
+                    findRealPositionError(ref inf, queryForFindPosition);
                     inf.indexLineError = i;
-                    if (inf2.positionLineError < inf.positionLineError)
-                    {
-                        inf = inf2;
-                    }
-                    else if (inf2.positionError < inf.positionError)
-                    {
-                        inf = inf2;
-                    }
                     break;
                 }
-
             }
 
             return inf;
