@@ -736,7 +736,7 @@ namespace WpfApplication1
                         findRealPositionError(ref masError[0], queryForFindPosition);
                     }
                 }
-                    
+                     
                 findBadVariable(ref masError[1], listVars);
                 if(masError[1].error)
                 {
