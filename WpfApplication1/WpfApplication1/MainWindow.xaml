@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="619.717" Width="1096.04" Loaded="Window_Loaded">
+        Title="MainWindow" Height="619.717" Width="1096.04" Loaded="Window_Loaded" ResizeMode="CanMinimize">
     <Grid Loaded="Grid_Loaded">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
