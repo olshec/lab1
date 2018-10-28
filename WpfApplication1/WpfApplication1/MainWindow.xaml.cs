@@ -116,11 +116,12 @@ namespace WpfApplication1
                         sr.Close();
                         break;
                     }
-                        
+                   
                     query += str;
                 }
                 try
                 {
+                    textBox.Text = query;
                     run(query);
                 }
                 catch
