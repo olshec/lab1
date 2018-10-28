@@ -627,7 +627,7 @@ namespace WpfApplication1
                     findDoubleVariable(ref inf3, listVars);
                     if(inf3.error)
                     {
-                        inf3.positionLineError = i;
+                        inf3.indexLineError = i;
                         findRealPositionError(ref inf3, queryForFindPosition);
                         if (inf3.positionLineError < inf.positionLineError)
                         {
@@ -670,7 +670,7 @@ namespace WpfApplication1
                 {
                     inf = getFirstError(masError);
                     //findRealPositionError(ref inf, queryForFindPosition);
-                    inf.indexLineError = i;
+                    //inf.indexLineError = i;
                     break;
                 }
             }
