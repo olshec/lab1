@@ -29,46 +29,27 @@ namespace WpfApplication1
                     if (listVars[i] == listVars[j] && i != j)
                     {
                         int positionFirstVariable = query.IndexOf(listVars[i]);
-
                         //while cheked space float a,a;
                         //positionFirstVariable > 0 &&
-                        while (true)
+                        while (!
+                            (query.ToCharArray()[positionFirstVariable - 1] == ' ' ||
+                            query.ToCharArray()[positionFirstVariable - 1] == ','))
                         {
                             positionFirstVariable++;
-                            if (positionFirstVariable < 0 || 
-                                positionFirstVariable >= query.ToCharArray().Length)
-                                break;
-                            if (!
-                            (query.ToCharArray()[positionFirstVariable - 1] == ' ' ||
-                            query.ToCharArray()[positionFirstVariable - 1] == ']' ||
-                            query.ToCharArray()[positionFirstVariable - 1] == '?' ||
-                            query.ToCharArray()[positionFirstVariable - 1] == ','))
-                            {
-                               // positionFirstVariable++;
-                                positionFirstVariable = query.IndexOf(listVars[i],
-                                    positionFirstVariable);
-                                break;
-                            }
-                            
+                            positionFirstVariable = query.IndexOf(listVars[i],
+                                positionFirstVariable);
                         }
 
-                        if (positionFirstVariable > 0 &&
-                               positionFirstVariable < query.ToCharArray().Length)
-                        {
-                            int positionDoubleVariable = query.IndexOf(listVars[i],
-                           positionFirstVariable + 1);
-                            if (positionDoubleVariable == -1)
-                                positionDoubleVariable = positionFirstVariable;
-                            inf.error = true;
-                            inf.errorChar = listVars[i].ToCharArray()[0];
-                            inf.indexLineError = 0;//=======================
-                            inf.positionError = positionDoubleVariable + 1;
-                            inf.trueQuery = query.Substring(0, positionDoubleVariable);
-                            inf.message = listVars[i];
-                        }
-                       
-
-                        //break;
+                        int positionDoubleVariable = query.IndexOf(listVars[i],
+                            positionFirstVariable + 1);
+                        if (positionDoubleVariable == -1)
+                            positionDoubleVariable = positionFirstVariable;
+                        inf.error = true;
+                        inf.errorChar = listVars[i].ToCharArray()[0];
+                        inf.indexLineError = 0;//=======================
+                        inf.positionError = positionDoubleVariable + 1;
+                        inf.trueQuery = query.Substring(0, positionDoubleVariable);
+                        inf.message = listVars[i];
                     }
                 }
             //return inf;
@@ -177,12 +158,12 @@ namespace WpfApplication1
                                 else
                                 {
                                     string name = query.Substring(0, query.Length - 1);
-                                    if(isType(name))
+                                    if (isType(name))
                                         inf = new InfoAboutError(true, name, query.Length,
                                     ';');
                                     else
-                                    inf = new InfoAboutError(true, "", 0,
-                                    query.ToCharArray()[0]);
+                                        inf = new InfoAboutError(true, "", 0,
+                                        query.ToCharArray()[0]);
                                 }
                             }
 
@@ -317,7 +298,7 @@ namespace WpfApplication1
                                     while (indexLenth < query.ToCharArray().Length &&
                                     query.ToCharArray()[indexLenth] == ' ')
                                         indexLenth++;
-                                    if( query.Length> indexLenth)
+                                    if (query.Length > indexLenth)
                                         inf = new InfoAboutError(true,
                                             new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
                                             query.ToCharArray()[indexLenth]);
@@ -381,12 +362,12 @@ namespace WpfApplication1
 
         private void formatString(ref string str)
         {
-            char[] listReplaceString = new char[] {'\r','\t','\n'};
+            char[] listReplaceString = new char[] { '\r', '\t', '\n' };
             foreach (char s in listReplaceString)
                 while (str.IndexOf(s) != -1)
                     str = str.Replace(s, ' ');
             while (str.IndexOf("  ") != -1)
-                    str = str.Replace("  ", " ");
+                str = str.Replace("  ", " ");
             while (str.IndexOf(";;") != -1)
                 str = str.Replace(";;", ";");
 
@@ -455,7 +436,7 @@ namespace WpfApplication1
                     else
                         positionError++;
                 }
-                if(masCharQuery[masCharQuery.Length-1]!=';')
+                if (masCharQuery[masCharQuery.Length - 1] != ';')
                     positionError++;
                 // inf.positionLineError = positionLineError;
                 // inf.positionError = positionError;
@@ -463,6 +444,7 @@ namespace WpfApplication1
 
             else
             {
+
                 for (int i = 0; i < countString; i++)
                 {
                     string q = masStr[i];
@@ -497,27 +479,14 @@ namespace WpfApplication1
                     }
                     else
                     {
-                            masCharQuery = masStr[i].ToCharArray();
-                            char[] masTrueCharQuery = inf.trueQuery.ToCharArray();
-                            int positionInSplit = 0;
-                            for (int j = 0; j < masTrueCharQuery.Length; j++)
-                            {
-                                while (masCharQuery[positionInSplit] != masTrueCharQuery[j]
-                                && !(masCharQuery[positionInSplit] =='\n' && masTrueCharQuery[j] ==' '))
-                                {
-                                    if (masCharQuery[positionInSplit] == '\n')
-                                    {
-                                        positionError = 0;
-                                        positionLineError++;
-                                    }
-                                    else
-                                        positionError++;
-                                    positionInSplit++;
-                                }
-                            }
-                            //positionError++;
-                            //if not dublicate
-                            while (masCharQuery[positionInSplit] != inf.errorChar)
+
+                        masCharQuery = masStr[i].ToCharArray();
+                        char[] masTrueCharQuery = inf.trueQuery.ToCharArray();
+                        int positionInSplit = 0;
+                        for (int j = 0; j < masTrueCharQuery.Length; j++)
+                        {
+                            while (masCharQuery[positionInSplit] != masTrueCharQuery[j]
+                            && !(masCharQuery[positionInSplit] == '\n' && masTrueCharQuery[j] == ' '))
                             {
                                 if (masCharQuery[positionInSplit] == '\n')
                                 {
@@ -528,10 +497,23 @@ namespace WpfApplication1
                                     positionError++;
                                 positionInSplit++;
                             }
-                            //positionError += positionInSplit;
-                            positionError++;
-                            break;
-                        
+                        }
+                        //positionError++;
+                        while (masCharQuery[positionInSplit] != inf.errorChar)
+                        {
+                            if (masCharQuery[positionInSplit] == '\n')
+                            {
+                                positionError = 0;
+                                positionLineError++;
+                            }
+                            else
+                                positionError++;
+                            positionInSplit++;
+                        }
+                        //positionError += positionInSplit;
+                        positionError++;
+                        break;
+
                     }
 
                 }
@@ -539,7 +521,7 @@ namespace WpfApplication1
             }
 
             inf.positionError = positionError;
-            inf.positionLineError = positionLineError+1;
+            inf.positionLineError = positionLineError + 1;
         }
 
         private void findBadVariable(ref InfoAboutError inf, List<string> listVars)
@@ -580,24 +562,15 @@ namespace WpfApplication1
 
         public InfoAboutError getFirstError(InfoAboutError[] masError)
         {
-           // int minLine = 0;
-           // int minPosition = 0;
-          InfoAboutError iar = new InfoAboutError();
-            for (int i = 0; i < masError.Length ; i++)
-            {
-                if (masError[i].error)
-                {
-                    iar = masError[i];
-                    masError[i] = masError[0];
-                    masError[0] = iar;
-                }
+            // int minLine = 0;
+            // int minPosition = 0;
+            InfoAboutError iar = new InfoAboutError();
 
-            }
-                for (int j = 0; j < masError.Length; j++)
-                for (int i = 0; i < masError.Length-1-j; i++)
+            for (int j = 0; j < masError.Length; j++)
+                for (int i = 0; i < masError.Length - 1 - j; i++)
                 {
-                    if ((masError[i].positionError > masError[i+1].positionError)
-                        &&(masError[i].error && masError[i+1].error))
+                    if ((masError[i].positionError > masError[i + 1].positionError)
+                        && (masError[i].error && masError[i + 1].error))
                     {
                         iar = masError[i];
                         masError[i] = masError[i + 1];
@@ -605,18 +578,18 @@ namespace WpfApplication1
                     }
                 }
 
-            for (int j=0;j<masError.Length;j++)
-            for (int i = 0; i < masError.Length-1-j; i++)
-            {
-                if((masError[i].positionLineError > masError[i+1].positionLineError)
-                        && (masError[i].error && masError[i + 1].error))
+            for (int j = 0; j < masError.Length; j++)
+                for (int i = 0; i < masError.Length - 1 - j; i++)
                 {
+                    if ((masError[i].positionLineError > masError[i + 1].positionLineError)
+                            && (masError[i].error && masError[i + 1].error))
+                    {
                         iar = masError[i];
-                        masError[i] = masError[i+1];
-                        masError[i+1] = iar;
+                        masError[i] = masError[i + 1];
+                        masError[i + 1] = iar;
                     }
-            }
-            return masError[0];     
+                }
+            return masError[0];
 
         }
 
@@ -652,36 +625,15 @@ namespace WpfApplication1
                     InfoAboutError inf3 = inf.Clone();
                     findRealPositionError(ref inf, queryForFindPosition);
                     findDoubleVariable(ref inf3, listVars);
-                    if(inf3.error)
+                    if (inf3.error)
                     {
                         inf3.indexLineError = i;
                         findRealPositionError(ref inf3, queryForFindPosition);
-                        if ((inf3.positionLineError < inf.positionLineError)
-                            && inf3.error)
+                        if (inf3.positionLineError < inf.positionLineError)
                         {
                             inf = inf3;
                         }
-                        else if ((inf3.positionError < inf.positionError)
-                            && inf3.error)
-                        {
-                            inf = inf3;
-                        }
-
-                        inf3 = inf.Clone();
-                        inf3.indexLineError = i;
-                        findDoubleVariable(ref inf3, listVars);
-                        if (inf3.error)
-                        {
-                            inf3.indexLineError=i;
-                            findRealPositionError(ref inf3, queryForFindPosition);
-                        }
-                        if (((inf3.positionLineError < inf.positionLineError)
-                            && inf3.error)|| (inf3.error && !inf.error))
-                        {
-                            inf = inf3;
-                        }
-                        else if (((inf3.positionError < inf.positionError)
-                            && inf3.error)|| (inf3.error && !inf.error))
+                        else if (inf3.positionError < inf.positionError)
                         {
                             inf = inf3;
                         }
@@ -697,33 +649,13 @@ namespace WpfApplication1
                 masError[0] = inf.Clone();
                 findRealPositionError(ref masError[2], queryForFindPosition);
                 findDoubleVariable(ref masError[0], listVars);
-                if(masError[0].error)
+                if (masError[0].error)
                 {
                     masError[0].indexLineError = i;
                     findRealPositionError(ref masError[0], queryForFindPosition);
-
-                    InfoAboutError inf3 = masError[0].Clone();
-                    inf3.indexLineError = i;
-                    findDoubleVariable(ref inf3, listVars);
-                    if (inf3.error)
+                    for (int k = listVars.Count - 1; k >= 0; k--)
                     {
-                        inf3.indexLineError = i;
-                        findRealPositionError(ref inf3, queryForFindPosition);
-                    }
-                    if (((inf3.positionLineError < inf.positionLineError)
-                        && inf3.error)|| (inf3.error && !inf.error))
-                    {
-                        masError[0] = inf3;
-                    }
-                    else if (((inf3.positionError < inf.positionError)
-                        && inf3.error)|| (inf3.error && !inf.error))
-                    {
-                        masError[0] = inf3;
-                    }
-
-                    for(int k= listVars.Count-1; k>=0;k--)
-                    {
-                        if(listVars[k]== masError[0].message)
+                        if (listVars[k] == masError[0].message)
                         {
                             listVars.RemoveAt(k);
                             break;
@@ -735,17 +667,19 @@ namespace WpfApplication1
                         masError[0].indexLineError = i;
                         findRealPositionError(ref masError[0], queryForFindPosition);
                     }
+
+
                 }
-                     
+
                 findBadVariable(ref masError[1], listVars);
-                if(masError[1].error)
+                if (masError[1].error)
                 {
                     masError[1].indexLineError = i;
                     findRealPositionError(ref masError[1], queryForFindPosition);
                 }
-                    
+
                 bool hasError = false;
-                foreach(InfoAboutError iar in masError)
+                foreach (InfoAboutError iar in masError)
                     if (iar.error)
                         hasError = true;
                 if (hasError)
