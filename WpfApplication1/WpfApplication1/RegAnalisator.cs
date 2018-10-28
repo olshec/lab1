@@ -569,7 +569,8 @@ namespace WpfApplication1
             for (int j = 0; j < masError.Length; j++)
                 for (int i = 0; i < masError.Length-1-j; i++)
                 {
-                    if (masError[i].positionError > masError[i+1].positionError)
+                    if ((masError[i].positionError > masError[i+1].positionError)
+                        &&(masError[i].error && masError[i+1].error))
                     {
                         iar = masError[i];
                         masError[i] = masError[i + 1];
@@ -580,7 +581,8 @@ namespace WpfApplication1
             for (int j=0;j<masError.Length;j++)
             for (int i = 0; i < masError.Length-1-j; i++)
             {
-                if(masError[i].positionLineError > masError[i+1].positionLineError)
+                if((masError[i].positionLineError > masError[i+1].positionLineError)
+                        && (masError[i].error && masError[i + 1].error))
                 {
                         iar = masError[i];
                         masError[i] = masError[i+1];
@@ -623,14 +625,18 @@ namespace WpfApplication1
                     InfoAboutError inf3 = inf.Clone();
                     findRealPositionError(ref inf, queryForFindPosition);
                     findDoubleVariable(ref inf3, listVars);
-                    findRealPositionError(ref inf3, queryForFindPosition);
-                    if (inf3.positionLineError < inf.positionLineError)
+                    if(inf3.error)
                     {
-                        inf = inf3;
-                    }
-                    else if (inf3.positionError < inf.positionError)
-                    {
-                        inf = inf3;
+                        inf3.positionLineError = i;
+                        findRealPositionError(ref inf3, queryForFindPosition);
+                        if (inf3.positionLineError < inf.positionLineError)
+                        {
+                            inf = inf3;
+                        }
+                        else if (inf3.positionError < inf.positionError)
+                        {
+                            inf = inf3;
+                        }
                     }
                     break;
                 }
@@ -638,12 +644,24 @@ namespace WpfApplication1
 
                 //InfoAboutError masError[1] = inf.Clone();
                 InfoAboutError[] masError = new InfoAboutError[3];
-                masError[2] = inf;
-                masError[0] = inf.Clone();
-                findRealPositionError(ref inf, queryForFindPosition);
+                masError[2] = inf.Clone();
                 masError[1] = inf.Clone();
+                masError[0] = inf.Clone();
+                findRealPositionError(ref masError[2], queryForFindPosition);
                 findDoubleVariable(ref masError[0], listVars);
+                if(masError[0].error)
+                {
+                    masError[0].indexLineError = i;
+                    findRealPositionError(ref masError[0], queryForFindPosition);
+                }
+                    
                 findBadVariable(ref masError[1], listVars);
+                if(masError[1].error)
+                {
+                    masError[1].indexLineError = i;
+                    findRealPositionError(ref masError[1], queryForFindPosition);
+                }
+                    
                 bool hasError = false;
                 foreach(InfoAboutError iar in masError)
                     if (iar.error)
@@ -651,7 +669,7 @@ namespace WpfApplication1
                 if (hasError)
                 {
                     inf = getFirstError(masError);
-                    findRealPositionError(ref inf, queryForFindPosition);
+                    //findRealPositionError(ref inf, queryForFindPosition);
                     inf.indexLineError = i;
                     break;
                 }
