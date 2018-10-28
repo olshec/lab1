@@ -690,7 +690,16 @@ namespace WpfApplication1
                     break;
                 }
             }
-
+            char[] masCharForQuery = queryForFindPosition.ToCharArray();
+            for (int i= masCharForQuery.Length -1;i>=0;i--)
+            {
+                if(masCharForQuery[i]!=' ' && masCharForQuery[i] != '\t')
+                {
+                    if (masCharForQuery[i] != ';')
+                        inf.message = "Отсутствует смвол: ";
+                    break;
+                }
+            }
             return inf;
         }
 

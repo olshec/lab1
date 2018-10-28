@@ -70,6 +70,8 @@ namespace WpfApplication1
                 richTextBox.AppendText(Environment.NewLine + "Позиция: " + inf.positionError);
                 if(inf.message=="")
                     richTextBox.AppendText(Environment.NewLine + "Неверный символ: " + inf.errorChar);
+                else if (inf.message == "Отсутствует смвол: ")
+                    richTextBox.AppendText(Environment.NewLine + "Отсутствует смвол: " + inf.errorChar);
                 else
                     richTextBox.AppendText(Environment.NewLine + "Дубликат переменной: " + inf.message);
             }
