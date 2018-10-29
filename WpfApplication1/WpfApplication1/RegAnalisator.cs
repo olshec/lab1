@@ -621,17 +621,20 @@ namespace WpfApplication1
                     inf.indexLineError = i;
                     inf.trueQuery += inf.str;
                     InfoAboutError inf3 = inf.Clone();
+                    InfoAboutError inf4 = inf.Clone();
                     findRealPositionError(ref inf, queryForFindPosition);
                     findDuplicateVariable(ref inf3, listVars);
                     if (inf3.error)
                     {
                         inf3.indexLineError = i;
                         findRealPositionError(ref inf3, queryForFindPosition);
-                        if (inf3.positionLineError < inf.positionLineError)
+                        if ((inf3.positionLineError < inf.positionLineError) ||
+                        (inf3.error && !inf.error))
                         {
                             inf = inf3;
                         }
-                        else if (inf3.positionError < inf.positionError)
+                        else if ((inf3.positionError < inf.positionError) ||
+                        (inf3.error && !inf.error))
                         {
                             inf = inf3;
                         }
@@ -651,18 +654,21 @@ namespace WpfApplication1
                             findRealPositionError(ref inf, queryForFindPosition);
                         }
                     }
-
-                    inf3 = inf.Clone();
-                    findBadVariable(ref inf3, listVars);
-                    if (inf3.positionLineError < inf.positionLineError)
+                    
+                    // inf3 = inf.Clone();
+                    findBadVariable(ref inf4, listVars);
+                    if (inf4.error)
                     {
-                        inf = inf3;
-                    }
-                    else if (inf3.positionError < inf.positionError)
-                    {
-                        inf = inf3;
+                        inf4.indexLineError = i;
+                        findRealPositionError(ref inf4, queryForFindPosition);
                     }
 
+
+                    InfoAboutError[] masError2 = new InfoAboutError[3];
+                    masError2[0] = inf;
+                    masError2[1] = inf3;
+                    masError2[2] = inf4;
+                    inf = getFirstPositionError(masError2);
                     break;
                 }
                 inf.trueQuery += q;
