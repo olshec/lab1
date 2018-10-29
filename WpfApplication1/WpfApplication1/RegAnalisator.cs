@@ -24,22 +24,43 @@ namespace WpfApplication1
         {
             string query = inf.trueQuery;
             for (int i = 0; i < listVars.Count; i++)
+            {
                 for (int j = 0; j < listVars.Count; j++)
                 {
                     if (listVars[i] == listVars[j] && i != j)
                     {
                         int positionFirstVariable = query.IndexOf(listVars[i]);
                         while (!
-                            (query.ToCharArray()[positionFirstVariable - 1] == ' ' ||
-                            query.ToCharArray()[positionFirstVariable - 1] == ','))
+                            ((query.ToCharArray()[positionFirstVariable - 1] == ' ' ||
+                            query.ToCharArray()[positionFirstVariable - 1] == ',') &&
+                            (positionFirstVariable > query.ToCharArray().Length - 1 ||
+                            query.ToCharArray()[positionFirstVariable + 1] == ' ' ||
+                            query.ToCharArray()[positionFirstVariable + 1] == ','))
+                            )
                         {
                             positionFirstVariable++;
                             positionFirstVariable = query.IndexOf(listVars[i],
-                                positionFirstVariable);
+                                positionFirstVariable + 1);
                         }
 
                         int positionDoubleVariable = query.IndexOf(listVars[i],
                             positionFirstVariable + 1);
+                        while (!
+                            ((positionDoubleVariable==-1||
+                            query.ToCharArray()[positionDoubleVariable - 1] == ' ' ||
+                            query.ToCharArray()[positionDoubleVariable - 1] == ',') &&
+                            (
+                            positionDoubleVariable > query.ToCharArray().Length - 1 ||
+                            query.ToCharArray()[positionDoubleVariable + 1] == ' ' ||
+                            query.ToCharArray()[positionDoubleVariable + 1] == ','))
+                            )
+                        {
+                            positionDoubleVariable++;
+                            positionDoubleVariable = query.IndexOf(listVars[i],
+                                positionDoubleVariable + 1);
+                        }
+
+
                         if (positionDoubleVariable == -1)
                             positionDoubleVariable = positionFirstVariable;
                         inf.error = true;
@@ -49,8 +70,10 @@ namespace WpfApplication1
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
                         inf.typeMessage = "Дубликат переменной";
                         inf.message = listVars[i];
+                        break;
                     }
                 }
+            }
         }
 
 
