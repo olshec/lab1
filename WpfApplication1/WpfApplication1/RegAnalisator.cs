@@ -677,14 +677,14 @@ namespace WpfApplication1
                 {
                     masError[0].indexLineError = i;
                     findRealPositionError(ref masError[0], queryForFindPosition);
-                    //for (int k = listVars.Count - 1; k >= 0; k--)
-                    //{
-                    //    if (listVars[k] == masError[0].message)
-                    //    {
-                    //        listVars.RemoveAt(k);
-                    //        break;
-                    //    }
-                    //}
+                    for (int k = listVars.Count - 1; k >= 0; k--)
+                    {
+                        if (listVars[k] == masError[0].message)
+                        {
+                            listVars.RemoveAt(k);
+                            break;
+                        }
+                    }
                     findDuplicateVariable(ref masError[0], listVars);
                     if (masError[0].error)
                     {

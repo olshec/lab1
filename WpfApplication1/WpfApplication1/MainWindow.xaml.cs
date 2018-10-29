@@ -57,13 +57,17 @@ namespace WpfApplication1
                 richTextBox.AppendText(Environment.NewLine + "Строка: " + inf.positionLineError);
                 richTextBox.AppendText(Environment.NewLine + "Позиция: " + inf.positionError);
                 if (inf.message == "")
-                    richTextBox.AppendText(Environment.NewLine + "Неверный символ: " + inf.errorChar);
+                    richTextBox.AppendText(Environment.NewLine + 
+                        "Неверный символ: " + inf.errorChar);
                 else if (inf.typeMessage == "Отсутствует символ")
-                    richTextBox.AppendText(Environment.NewLine + "Отсутствует символ"+ inf.message);
+                    richTextBox.AppendText(Environment.NewLine + 
+                        "Отсутствует символ: "+ inf.message);
                 else if (inf.typeMessage == "Дубликат переменной")
-                    richTextBox.AppendText(Environment.NewLine + inf.message);
+                    richTextBox.AppendText(Environment.NewLine + 
+                        "Дубликат переменной: "+ inf.message);
                 else if (inf.typeMessage == "Неверное имя переменной")
-                    richTextBox.AppendText(Environment.NewLine + inf.message);
+                    richTextBox.AppendText(Environment.NewLine + 
+                        "Неверное имя переменной: "+ inf.message);
             }
 
         }
