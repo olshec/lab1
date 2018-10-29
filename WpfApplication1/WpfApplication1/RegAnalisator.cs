@@ -503,7 +503,7 @@ namespace WpfApplication1
                         break;
 
                     }
-
+                
                 }
 
             }
@@ -622,6 +622,22 @@ namespace WpfApplication1
                         {
                             inf = inf3;
                         }
+
+                        for (int k = listVars.Count - 1; k >= 0; k--)
+                        {
+                            if (listVars[k] == inf.message)
+                            {
+                                listVars.RemoveAt(k);
+                                break;
+                            }
+                        }
+                        findDoubleVariable(ref inf, listVars);
+                        if (inf.error)
+                        {
+                            inf.indexLineError = i;
+                            findRealPositionError(ref inf, queryForFindPosition);
+                        }
+
                     }
                     break;
                 }
