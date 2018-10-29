@@ -547,7 +547,17 @@ namespace WpfApplication1
         {
             InfoAboutError iar = new InfoAboutError();
 
-            for (int j = 0; j < masError.Length; j++)
+            for (int i = 0; i < masError.Length; i++)
+            {
+                if (masError[i].error)
+                {
+                    iar = masError[i];
+                    masError[i] = masError[0];
+                    masError[0] = iar;
+                }
+            }
+
+                for (int j = 0; j < masError.Length; j++)
                 for (int i = 0; i < masError.Length - 1 - j; i++)
                 {
                     if ((masError[i].positionError > masError[i + 1].positionError)
