@@ -30,7 +30,7 @@ namespace WpfApplication1
 
         private void Grid_Loaded(object sender, RoutedEventArgs e)
         {
-            textBox.Text = "     string [, ,,] bbb, a2  , uu ;;;" +'\n'+ " float a ff ;; ";
+            textBox.Text = "     string [, ,,] bbb, a2  , uu ;;;" + '\n' + " float a ff ;; ";
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -39,7 +39,7 @@ namespace WpfApplication1
             richTextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
         }
 
-       
+
         private void run(string query)
         {
             richTextBox.Document.Blocks.Clear();
@@ -47,21 +47,23 @@ namespace WpfApplication1
             RegAnalisator ra = new RegAnalisator();
             List<string> listVars = new List<string>();
             List<string> listTypes = new List<string>();
-                        
+
 
             InfoAboutError inf = ra.checkQuery(query, listVars, listTypes);
 
-            richTextBox.AppendText("Ошибка: " + ((inf.error)?"Да":"Нет"));
-            if(inf.error)
+            richTextBox.AppendText("Ошибка: " + ((inf.error) ? "Да" : "Нет"));
+            if (inf.error)
             {
                 richTextBox.AppendText(Environment.NewLine + "Строка: " + inf.positionLineError);
                 richTextBox.AppendText(Environment.NewLine + "Позиция: " + inf.positionError);
-                if(inf.message=="")
+                if (inf.message == "")
                     richTextBox.AppendText(Environment.NewLine + "Неверный символ: " + inf.errorChar);
-                else if (inf.message == "Отсутствует смвол: ")
-                    richTextBox.AppendText(Environment.NewLine + "Отсутствует смвол: " + inf.errorChar);
-                else
-                    richTextBox.AppendText(Environment.NewLine + "Дубликат переменной: " + inf.message);
+                else if (inf.typeMessage == "Отсутствует символ")
+                    richTextBox.AppendText(Environment.NewLine + "Отсутствует символ"+ inf.message);
+                else if (inf.typeMessage == "Дубликат переменной")
+                    richTextBox.AppendText(Environment.NewLine + inf.message);
+                else if (inf.typeMessage == "Неверное имя переменной")
+                    richTextBox.AppendText(Environment.NewLine + inf.message);
             }
 
         }
@@ -86,10 +88,10 @@ namespace WpfApplication1
         {
             richTextBox.Document.Blocks.Clear();
             string query = "";
-            Microsoft.Win32.OpenFileDialog of=
+            Microsoft.Win32.OpenFileDialog of =
                 new Microsoft.Win32.OpenFileDialog();
             of.ShowDialog();
-            if(of.FileName!="")
+            if (of.FileName != "")
             {
                 File.OpenText(of.FileName);
                 StreamReader sr = File.OpenText(of.FileName);
@@ -101,7 +103,7 @@ namespace WpfApplication1
                         sr.Close();
                         break;
                     }
-                   
+
                     query += str;
                 }
                 try
@@ -111,11 +113,11 @@ namespace WpfApplication1
                 }
                 catch
                 {
-                    MessageBox.Show("Произошла какакя-то ошибка (:", 
+                    MessageBox.Show("Произошла какакя-то ошибка (:",
                         "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
-            
+
         }
     }
 }

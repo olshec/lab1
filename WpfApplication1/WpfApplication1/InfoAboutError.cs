@@ -18,9 +18,10 @@ namespace WpfApplication1
         public int positionError;
         public int positionLineError;
         public string message;
+        public string typeMessage;
 
 
-        public InfoAboutError(bool er, string s, int positionError=0, char errorChar=';')
+        public InfoAboutError(bool er, string s, int positionError = 0, char errorChar = ';')
         {
             error = er;
             str = s;
@@ -44,18 +45,18 @@ namespace WpfApplication1
             this.trueQuery = "";
             this.message = "";
         }
-       
+
         public InfoAboutError Clone()
         {
             InfoAboutError iar = new InfoAboutError();
             iar.error = this.error;
-            iar.str= this.str;
-            iar.positionError= this.positionError;
-            iar.positionLineError= this.positionLineError;
-            iar.errorChar= this.errorChar;
-            iar.indexLineError= this.indexLineError;
-            iar.trueQuery= this.trueQuery;
-            iar.message= this.message;
+            iar.str = this.str;
+            iar.positionError = this.positionError;
+            iar.positionLineError = this.positionLineError;
+            iar.errorChar = this.errorChar;
+            iar.indexLineError = this.indexLineError;
+            iar.trueQuery = this.trueQuery;
+            iar.message = this.message;
             return iar;
         }
 

@@ -47,6 +47,7 @@ namespace WpfApplication1
                         inf.indexLineError = 0;//=======================
                         inf.positionError = positionDoubleVariable + 1;
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
+                        inf.typeMessage = "Дубликат переменной";
                         inf.message = listVars[i];
                     }
                 }
@@ -522,6 +523,8 @@ namespace WpfApplication1
                         inf.indexLineError = -1;
                         inf.positionError = positionDoubleVariable + 1;
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
+                        inf.typeMessage = "Неверное имя переменной";
+                        inf.message = listVars[i];
                     }
                 }
         }
@@ -691,7 +694,10 @@ namespace WpfApplication1
                 if(masCharForQuery[i]!=' ' && masCharForQuery[i] != '\t')
                 {
                     if (masCharForQuery[i] != ';')
-                        inf.message = "Отсутствует смвол: ";
+                    {
+                        inf.typeMessage = "Отсутствует символ";
+                        inf.message = ";";
+                    }
                     break;
                 }
             }
