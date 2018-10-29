@@ -19,8 +19,8 @@ namespace WpfApplication1
         string[] masNameAllType = new string[] {"sbyte","short","int","long","byte","ushort","uint",
                "ulong","float","double","decimal","bool","char", "string", "object" };
 
-
-        private void findDoubleVariable(ref InfoAboutError inf, List<string> listVars)
+        
+        private void findDuplicateVariable(ref InfoAboutError inf, List<string> listVars)
         {
             string query = inf.trueQuery;
             for (int i = 0; i < listVars.Count; i++)
@@ -52,14 +52,6 @@ namespace WpfApplication1
                 }
         }
 
-        private bool hasVarInList(string nameVar, List<string> listVars)
-        {
-            foreach (string s in listVars)
-                if (s == nameVar)
-                    return true;
-            return false;
-        }
-
 
         private bool isType(string str)
         {
@@ -73,15 +65,15 @@ namespace WpfApplication1
             return false;
         }
 
-        private bool isUserKey(char chekChar)
+        private bool isIdentifierChar(char chekChar)
         {
             if (Char.IsDigit(chekChar) || Char.IsLetter(chekChar)
-                || chekChar == '_' || isKey(chekChar))
+                || chekChar == '_' || isKeyChar(chekChar))
                 return false;
             return true;
         }
 
-        private bool isKey(char chekChar)
+        private bool isKeyChar(char chekChar)
         {
             char[] listKey = new char[] { '?', '[', ']', ',', ';' };
             foreach (char c in listKey)
@@ -136,7 +128,7 @@ namespace WpfApplication1
                         else
                         {
 
-                            if (isKey(query.ToCharArray()[query.Length - 1]))
+                            if (isKeyChar(query.ToCharArray()[query.Length - 1]))
                             {
                                 bool hasNameType = false;
                                 string nameGroup = "NameType";
@@ -203,8 +195,8 @@ namespace WpfApplication1
                             while (indexLenth < query.ToCharArray().Length)
                             {
                                 if (query.ToCharArray()[indexLenth] != ' '
-                                    && !isKey(query.ToCharArray()[indexLenth])
-                                    && !isUserKey(query.ToCharArray()[indexLenth]))
+                                    && !isKeyChar(query.ToCharArray()[indexLenth])
+                                    && !isIdentifierChar(query.ToCharArray()[indexLenth]))
                                 {
                                     nameVar += query.ToCharArray()[indexLenth];
                                     indexLenth++;
@@ -235,7 +227,7 @@ namespace WpfApplication1
 
                             //int g, f , ]   , f 
                             if (indexLenth < query.ToCharArray().Length &&
-                                (isKey(query.ToCharArray()[indexLenth]) &&
+                                (isKeyChar(query.ToCharArray()[indexLenth]) &&
                                 !hasVar)
                                )
                             {
@@ -271,8 +263,8 @@ namespace WpfApplication1
                                 while (indexLenth < query.ToCharArray().Length)
                                 {
                                     if (query.ToCharArray()[indexLenth] != ' '
-                                        && !isKey(query.ToCharArray()[indexLenth])
-                                        && !isUserKey(query.ToCharArray()[indexLenth])
+                                        && !isKeyChar(query.ToCharArray()[indexLenth])
+                                        && !isIdentifierChar(query.ToCharArray()[indexLenth])
                                         )
                                     {
                                         nameVar += query.ToCharArray()[indexLenth];
@@ -385,11 +377,11 @@ namespace WpfApplication1
                 {
 
                     if (
-                        (!isKey(masString[i].ToCharArray()[masString[i].Length - 1]) &&
-                        !isKey(masString[i + 1].ToCharArray()[0]))
+                        (!isKeyChar(masString[i].ToCharArray()[masString[i].Length - 1]) &&
+                        !isKeyChar(masString[i + 1].ToCharArray()[0]))
                         ||
-                        (isUserKey(masString[i].ToCharArray()[masString[i].Length - 1]) ||
-                        isUserKey(masString[i + 1].ToCharArray()[0]))
+                        (isIdentifierChar(masString[i].ToCharArray()[masString[i].Length - 1]) ||
+                        isIdentifierChar(masString[i + 1].ToCharArray()[0]))
                         )
                         newString += " ";
                     newString += masString[i + 1];
@@ -534,7 +526,7 @@ namespace WpfApplication1
                 }
         }
 
-        private void deleteSymbol(ref string str)
+        private void deleteSymbols(ref string str)
         {
             while (str.IndexOf('\r') != -1)
                 str = str.Remove(str.IndexOf('\r'), 1);
@@ -548,7 +540,7 @@ namespace WpfApplication1
             }
         }
 
-        public InfoAboutError getFirstError(InfoAboutError[] masError)
+        public InfoAboutError getFirstPositionError(InfoAboutError[] masError)
         {
             InfoAboutError iar = new InfoAboutError();
 
@@ -579,11 +571,12 @@ namespace WpfApplication1
 
         }
 
-        public InfoAboutError getTrueQuery(string query, List<string> listVars, List<string> listTypes)
+
+        public InfoAboutError checkQuery(string query, List<string> listVars, List<string> listTypes)
         {
             RegAnalisator ra = new RegAnalisator();
             InfoAboutError inf = new InfoAboutError();
-            deleteSymbol(ref query);
+            deleteSymbols(ref query);
 
             string queryForFindPosition = query;
             ra.formatString(ref query);
@@ -609,7 +602,7 @@ namespace WpfApplication1
                     inf.trueQuery += inf.str;
                     InfoAboutError inf3 = inf.Clone();
                     findRealPositionError(ref inf, queryForFindPosition);
-                    findDoubleVariable(ref inf3, listVars);
+                    findDuplicateVariable(ref inf3, listVars);
                     if (inf3.error)
                     {
                         inf3.indexLineError = i;
@@ -631,7 +624,7 @@ namespace WpfApplication1
                                 break;
                             }
                         }
-                        findDoubleVariable(ref inf, listVars);
+                        findDuplicateVariable(ref inf, listVars);
                         if (inf.error)
                         {
                             inf.indexLineError = i;
@@ -643,13 +636,12 @@ namespace WpfApplication1
                 }
                 inf.trueQuery += q;
 
-                //InfoAboutError masError[1] = inf.Clone();
                 InfoAboutError[] masError = new InfoAboutError[3];
                 masError[2] = inf.Clone();
                 masError[1] = inf.Clone();
                 masError[0] = inf.Clone();
                 findRealPositionError(ref masError[2], queryForFindPosition);
-                findDoubleVariable(ref masError[0], listVars);
+                findDuplicateVariable(ref masError[0], listVars);
                 if (masError[0].error)
                 {
                     masError[0].indexLineError = i;
@@ -662,7 +654,7 @@ namespace WpfApplication1
                             break;
                         }
                     }
-                    findDoubleVariable(ref masError[0], listVars);
+                    findDuplicateVariable(ref masError[0], listVars);
                     if (masError[0].error)
                     {
                         masError[0].indexLineError = i;
@@ -689,9 +681,7 @@ namespace WpfApplication1
                         
                 if (hasError)
                 {
-                    inf = getFirstError(masError);
-                    //findRealPositionError(ref inf, queryForFindPosition);
-                    //inf.indexLineError = i;
+                    inf = getFirstPositionError(masError);
                     break;
                 }
             }

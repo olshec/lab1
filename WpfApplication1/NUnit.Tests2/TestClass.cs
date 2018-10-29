@@ -127,7 +127,7 @@ namespace NUnit.Tests2
             List<string> listVars = new List<string>();
             List<string> listTypes = new List<string>();
 
-            InfoAboutError inf = ra.getTrueQuery(query,
+            InfoAboutError inf = ra.checkQuery(query,
                 listVars, listTypes);
 
             Assert.AreEqual(inf.error, hasError);
@@ -143,7 +143,7 @@ namespace NUnit.Tests2
             List<string> listVars = new List<string>();
             List<string> listTypes = new List<string>();
 
-            InfoAboutError inf = ra.getTrueQuery(query,
+            InfoAboutError inf = ra.checkQuery(query,
                 listVars, listTypes);
 
             Assert.AreEqual(inf.errorChar, errorSymbol);
@@ -160,7 +160,7 @@ namespace NUnit.Tests2
             List<string> listVars = new List<string>();
             List<string> listTypes = new List<string>();
 
-            InfoAboutError inf = ra.getTrueQuery(query,
+            InfoAboutError inf = ra.checkQuery(query,
                 listVars, listTypes);
 
             Assert.AreEqual(inf.positionLineError, positionLineError);
@@ -176,7 +176,7 @@ namespace NUnit.Tests2
             List<string> listVars = new List<string>();
             List<string> listTypes = new List<string>();
 
-            InfoAboutError inf = ra.getTrueQuery(query,
+            InfoAboutError inf = ra.checkQuery(query,
                 listVars, listTypes);
 
             Assert.AreEqual(inf.positionError, positionError);

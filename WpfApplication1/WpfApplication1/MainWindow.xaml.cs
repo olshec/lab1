@@ -49,7 +49,7 @@ namespace WpfApplication1
             List<string> listTypes = new List<string>();
                         
 
-            InfoAboutError inf = ra.getTrueQuery(query, listVars, listTypes);
+            InfoAboutError inf = ra.checkQuery(query, listVars, listTypes);
 
             richTextBox.AppendText("Ошибка: " + ((inf.error)?"Да":"Нет"));
             if(inf.error)
