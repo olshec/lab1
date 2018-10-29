@@ -47,7 +47,8 @@ namespace WpfApplication1
                         inf.indexLineError = 0;//=======================
                         inf.positionError = positionDoubleVariable + 1;
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
-                        inf.message = listVars[i];
+                        inf.typeMessage = "Дубликат переменной";
+                        inf.message = "Дубликат переменной: "+listVars[i];
                     }
                 }
         }
@@ -522,6 +523,8 @@ namespace WpfApplication1
                         inf.indexLineError = -1;
                         inf.positionError = positionDoubleVariable + 1;
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
+                        inf.typeMessage = "Неверное имя переменной";
+                        inf.message = "Неверное имя переменной: " + listVars[i];
                     }
                 }
         }
@@ -543,9 +546,16 @@ namespace WpfApplication1
         public InfoAboutError getFirstPositionError(InfoAboutError[] masError)
         {
             InfoAboutError iar = new InfoAboutError();
+            for (int i = 0; i < masError.Length; i++)
+                if (masError[i].error)
+                {
+                    iar = masError[i];
+                    masError[i] = masError[0];
+                    masError[0] = iar;
+                }
 
-            for (int j = 0; j < masError.Length; j++)
-                for (int i = 0; i < masError.Length - 1 - j; i++)
+                for (int j = 0; j < masError.Length; j++)
+                for (int i = 0; i < masError.Length-1; i++)
                 {
                     if ((masError[i].positionError > masError[i + 1].positionError)
                         && (masError[i].error && masError[i + 1].error))
@@ -557,7 +567,7 @@ namespace WpfApplication1
                 }
 
             for (int j = 0; j < masError.Length; j++)
-                for (int i = 0; i < masError.Length - 1 - j; i++)
+                for (int i = 0; i < masError.Length-1; i++)
                 {
                     if ((masError[i].positionLineError > masError[i + 1].positionLineError)
                             && (masError[i].error && masError[i + 1].error))
@@ -630,8 +640,19 @@ namespace WpfApplication1
                             inf.indexLineError = i;
                             findRealPositionError(ref inf, queryForFindPosition);
                         }
-
                     }
+
+                    inf3 = inf.Clone();
+                    findBadVariable(ref inf3, listVars);
+                    if (inf3.positionLineError < inf.positionLineError)
+                    {
+                        inf = inf3;
+                    }
+                    else if (inf3.positionError < inf.positionError)
+                    {
+                        inf = inf3;
+                    }
+
                     break;
                 }
                 inf.trueQuery += q;
@@ -646,14 +667,14 @@ namespace WpfApplication1
                 {
                     masError[0].indexLineError = i;
                     findRealPositionError(ref masError[0], queryForFindPosition);
-                    for (int k = listVars.Count - 1; k >= 0; k--)
-                    {
-                        if (listVars[k] == masError[0].message)
-                        {
-                            listVars.RemoveAt(k);
-                            break;
-                        }
-                    }
+                    //for (int k = listVars.Count - 1; k >= 0; k--)
+                    //{
+                    //    if (listVars[k] == masError[0].message)
+                    //    {
+                    //        listVars.RemoveAt(k);
+                    //        break;
+                    //    }
+                    //}
                     findDuplicateVariable(ref masError[0], listVars);
                     if (masError[0].error)
                     {
@@ -691,7 +712,10 @@ namespace WpfApplication1
                 if(masCharForQuery[i]!=' ' && masCharForQuery[i] != '\t')
                 {
                     if (masCharForQuery[i] != ';')
-                        inf.message = "Отсутствует смвол: ";
+                    {
+                        inf.typeMessage = "Отсутствует символ";
+                        inf.message = "Отсутствует символ ';'";
+                    }
                     break;
                 }
             }

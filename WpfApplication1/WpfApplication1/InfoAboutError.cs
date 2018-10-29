@@ -18,6 +18,7 @@ namespace WpfApplication1
         public int positionError;
         public int positionLineError;
         public string message;
+        public string typeMessage;
 
 
         public InfoAboutError(bool er, string s, int positionError=0, char errorChar=';')
