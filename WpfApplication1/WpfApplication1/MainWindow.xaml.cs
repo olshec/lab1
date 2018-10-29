@@ -60,7 +60,7 @@ namespace WpfApplication1
                     richTextBox.AppendText(Environment.NewLine + "Неверный символ: " + inf.errorChar);
                 else if (inf.typeMessage == "Отсутствует символ")
                     richTextBox.AppendText(Environment.NewLine + inf.message);
-                else if (inf.typeMessage == "Дубликат переменной: ")
+                else if (inf.typeMessage == "Дубликат переменной")
                     richTextBox.AppendText(Environment.NewLine + inf.message);
                 else if (inf.typeMessage == "Неверное имя переменной")
                     richTextBox.AppendText(Environment.NewLine + inf.message);
