@@ -9,11 +9,11 @@ namespace WpfApplication1
     public class InfoAboutError
     {
         public bool error;
-        public string str;
+        public string str;//for addition to result
         public char errorChar;
 
         public int indexLineError;
-        public string trueQuery;
+        public string trueQuery; //for get result from substing
 
         public int positionError;
         public int positionLineError;

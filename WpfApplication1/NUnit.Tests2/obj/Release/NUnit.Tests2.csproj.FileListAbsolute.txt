@@ -1,0 +1,9 @@
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\bin\Release\NUnit.Tests2.dll
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\bin\Release\NUnit.Tests2.pdb
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\bin\Release\nunit.framework.dll
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\bin\Release\WpfApplication1.exe
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\bin\Release\WpfApplication1.pdb
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\bin\Release\nunit.framework.xml
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\obj\Release\NUnit.Tests2.csprojResolveAssemblyReference.cache
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\obj\Release\NUnit.Tests2.dll
+F:\k\dsk\rep1\WpfApplication1\NUnit.Tests2\obj\Release\NUnit.Tests2.pdb

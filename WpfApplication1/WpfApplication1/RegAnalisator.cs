@@ -118,6 +118,7 @@ namespace WpfApplication1
             return false;
         }
 
+        //check error in string
         private InfoAboutError checkString(string query, List<string> listVars, List<string> listType)
         {
             string nameTypeWithNull = String.Join("|", masNameTypeWithNull);
@@ -171,11 +172,11 @@ namespace WpfApplication1
                                     Capture c = gr.Captures[j];
                                     listType.Add(c.Value);
                                 }
-                                //int]
+                                //error like: int]
                                 if (hasNameType)
                                     inf = new InfoAboutError(true, "", query.Length,
                                 query.ToCharArray()[query.Length - 1]);
-                                //dfg,dfg,dg
+                                //error like: dfg,dfg,dg
                                 else
                                 {
                                     string name = query.Substring(0, query.Length - 1);
@@ -190,15 +191,16 @@ namespace WpfApplication1
 
 
                             else
-                                //int
+                                //error like: int
                                 if (isType(query))
                                 inf = new InfoAboutError(true, "", query.Length + 1);
-                            //integreg
+                            //error like: integreg
                             else
                                 inf = new InfoAboutError(true, "", 0, query.ToCharArray()[0]);
 
                         }
                     }
+                    //g.Value.Length > 0
                     else
                     {
                         bool hasVar = false;
@@ -257,13 +259,13 @@ namespace WpfApplication1
                                 query.ToCharArray()[indexLenth] == ' ')
                                 indexLenth++;
 
-                            //int g, f , ]   , f 
+                            //error like: int g, f , ]   , f 
                             if (indexLenth < query.ToCharArray().Length &&
                                 (isKeyChar(query.ToCharArray()[indexLenth]) &&
                                 !hasVar)
                                )
                             {
-                                //string? object?
+                                //error like: string? object?
                                 if (query.ToCharArray()[indexLenth] == '?'
                                     && indexLenth - 6 >= 0)
                                 {
@@ -288,7 +290,7 @@ namespace WpfApplication1
                                         new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
                                 }
                             }
-                            //int?[] abv rrr
+                            //error like: int?[] abv rrr
                             else
                             {
                                 string nameVar = "";
@@ -304,7 +306,7 @@ namespace WpfApplication1
                                     }
                                     else break;
                                 }
-                                //indexLenth++;
+                                
                                 while (indexLenth < query.ToCharArray().Length &&
                                 query.ToCharArray()[indexLenth] == ' ')
                                     indexLenth++;
@@ -327,12 +329,12 @@ namespace WpfApplication1
 
                                 }
                                 else
-                                    //int j, b d;
+                                    //error like: int j, b d;
                                     if (indexLenth < query.ToCharArray().Length)
                                     inf = new InfoAboutError(true,
                                         new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1,
                                         query.ToCharArray()[indexLenth]);
-                                //int j, d d
+                                //error like: int j, d d
                                 else
                                     inf = new InfoAboutError(true,
                                         new String(query.ToCharArray(), 0, indexLenth), indexLenth + 1);
@@ -343,6 +345,7 @@ namespace WpfApplication1
                     }
 
                 }
+                //g.Value.Length >= query.Length
                 else
                 {
                     inf = new InfoAboutError(false, query);
@@ -364,9 +367,6 @@ namespace WpfApplication1
                     }
 
                 }
-
-
-
                 return inf;
             }
             return null;
@@ -398,8 +398,6 @@ namespace WpfApplication1
                 {
                     str = str.Remove(str.Length - 1, 1);
                 }
-
-
             if (str.Length > 0)
             {
                 string[] masString = str.Split(' ');
@@ -424,7 +422,7 @@ namespace WpfApplication1
 
         }
 
-
+        //get position in source query
         private void findRealPositionError(ref InfoAboutError inf,
             string sourceQuery)
         {
@@ -536,6 +534,8 @@ namespace WpfApplication1
             inf.positionLineError = positionLineError + 1;
         }
 
+
+
         private void findBadVariable(ref InfoAboutError inf, List<string> listVars)
         {
             string query = inf.trueQuery;
@@ -576,6 +576,7 @@ namespace WpfApplication1
                 else break;
             }
         }
+
 
         public InfoAboutError getFirstPositionError(InfoAboutError[] masError)
         {
@@ -624,6 +625,8 @@ namespace WpfApplication1
             return masError[0];
 
         }
+
+
 
 
         public InfoAboutError checkQuery(string query, List<string> listVars, List<string> listTypes)
@@ -764,7 +767,7 @@ namespace WpfApplication1
                     if (masCharForQuery[i] != ';')
                     {
                         inf.typeMessage = "Отсутствует символ";
-                        inf.message = ";";
+                        inf.message = ";";  
                     }
                     break;
                 }
