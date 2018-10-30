@@ -43,6 +43,7 @@ namespace NUnit.Tests2
             #endregion //symbol '?' in object and string
 
             #region //double variable
+            new object[] { "int a, a9, a;", 'a',true, 1, 12},
             new object[] {"int a,b,c,a,d;", 'a',true, 1, 11},
             new object[] {"string b1,a2,v3,a2;", 'a',true, 1, 17},
             new object[] {"float?[,,,] b1,a2,v3,b1;", 'b',true, 1, 22},
