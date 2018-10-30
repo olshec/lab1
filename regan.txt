@@ -1,0 +1,11 @@
+     inf.typeMessage = "Дубликат переменной";
+                        inf.message = "Дубликат переменной: "+listVars[i];
+                    
+
+
+
+if (masCharForQuery[i] != ';')
+                    {
+                        inf.typeMessage = "Отсутствует символ";
+                        inf.message = "Отсутствует символ ';'";
+                    }

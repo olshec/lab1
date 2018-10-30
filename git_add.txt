@@ -1,0 +1,14 @@
+#!/bin/bash
+cd "/f/k/dsk/rep1/WpfApplication1/WpfApplication1"
+git add "/f/k/dsk/rep1/WpfApplication1/WpfApplication1/MainWindow.xaml.cs"
+git add "/f/k/dsk/rep1/WpfApplication1/WpfApplication1/InfoAboutError.cs"
+git add "/f/k/dsk/rep1/WpfApplication1/WpfApplication1/RegAnalisator.cs"
+git add "/f/k/dsk/rep1/WpfApplication1/NUnit.Tests2/TestClass.cs"
+
+
+git push -u newOrigin master
+
+git checkout master
+git checkout 1887d78
+
+git branch <new-branch-name> 1887d78

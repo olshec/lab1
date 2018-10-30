@@ -1,0 +1,42 @@
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.exe.config
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.exe
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.pdb
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csprojResolveAssemblyReference.cache
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\MainWindow.g.cs
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\App.g.cs
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1_MarkupCompile.cache
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1_MarkupCompile.lref
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\MainWindow.baml
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.g.resources
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.Properties.Resources.resources
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.exe
+c:\users\user1\documents\visual studio 2015\Projects\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.pdb
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.exe.config
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.exe
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.pdb
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.exe
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.pdb
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csprojResolveAssemblyReference.cache
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\MainWindow.g.cs
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\App.g.cs
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1_MarkupCompile.cache
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1_MarkupCompile.lref
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\MainWindow.baml
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.g.resources
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.Properties.Resources.resources
+C:\Users\user1\Desktop\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.exe.config
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.exe
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.pdb
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.exe
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\bin\Debug\WpfApplication1.pdb
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\MainWindow.g.cs
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\App.g.cs
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1_MarkupCompile.cache
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1_MarkupCompile.lref
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\MainWindow.baml
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.g.resources
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.Properties.Resources.resources
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csproj.GenerateResource.Cache
+F:\k\dsk\rep1\WpfApplication1\WpfApplication1\obj\Debug\WpfApplication1.csprojResolveAssemblyReference.cache
