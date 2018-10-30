@@ -23,6 +23,7 @@ namespace WpfApplication1
         private void findDuplicateVariable(ref InfoAboutError inf, List<string> listVars)
         {
             string query = inf.trueQuery;
+            bool exit = false;
             for (int i = 0; i < listVars.Count; i++)
             {
                 for (int j = 0; j < listVars.Count; j++)
@@ -31,11 +32,12 @@ namespace WpfApplication1
                     {
                         int positionFirstVariable = query.IndexOf(listVars[i]);
                         while (!
-                            ((query.ToCharArray()[positionFirstVariable - 1] == ' ' ||
+                            (positionFirstVariable == -1) && !((
+                            query.ToCharArray()[positionFirstVariable - 1] == ' ' ||
                             query.ToCharArray()[positionFirstVariable - 1] == ',') &&
                             (positionFirstVariable > query.ToCharArray().Length - 1 ||
-                            query.ToCharArray()[positionFirstVariable + 1] == ' ' ||
-                            query.ToCharArray()[positionFirstVariable + 1] == ','))
+                            query.ToCharArray()[positionFirstVariable + listVars[i].Length] == ' ' ||
+                            query.ToCharArray()[positionFirstVariable + listVars[i].Length] == ','))
                             )
                         {
                             positionFirstVariable++;
@@ -51,8 +53,9 @@ namespace WpfApplication1
                             query.ToCharArray()[positionDoubleVariable - 1] == ',') &&
                             (
                             positionDoubleVariable > query.ToCharArray().Length - 1 ||
-                            query.ToCharArray()[positionDoubleVariable + 1] == ' ' ||
-                            query.ToCharArray()[positionDoubleVariable + 1] == ','))
+                            query.ToCharArray()[positionDoubleVariable +  listVars[i].Length] == ' ' ||
+                            query.ToCharArray()[positionDoubleVariable +  listVars[i].Length] == ',')||
+                            query.ToCharArray()[positionDoubleVariable + listVars[i].Length] == ';')
                             )
                         {
                             positionDoubleVariable++;
@@ -70,9 +73,12 @@ namespace WpfApplication1
                         inf.trueQuery = query.Substring(0, positionDoubleVariable);
                         inf.typeMessage = "Дубликат переменной";
                         inf.message = listVars[i];
+                        exit = true;
                         break;
                     }
                 }
+                if (exit)
+                    break;
             }
         }
 
