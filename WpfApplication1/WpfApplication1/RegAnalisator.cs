@@ -36,6 +36,7 @@ namespace WpfApplication1
                             query.ToCharArray()[positionFirstVariable - 1] == ' ' ||
                             query.ToCharArray()[positionFirstVariable - 1] == ',') &&
                             (positionFirstVariable > query.ToCharArray().Length - 1 ||
+                            positionFirstVariable + listVars[i].Length >= query.ToCharArray().Length ||
                             query.ToCharArray()[positionFirstVariable + listVars[i].Length] == ' ' ||
                             query.ToCharArray()[positionFirstVariable + listVars[i].Length] == ','))
                             )
@@ -53,6 +54,7 @@ namespace WpfApplication1
                             query.ToCharArray()[positionDoubleVariable - 1] == ',') &&
                             (
                             positionDoubleVariable > query.ToCharArray().Length - 1 ||
+                            positionDoubleVariable + listVars[i].Length >= query.ToCharArray().Length ||
                             query.ToCharArray()[positionDoubleVariable +  listVars[i].Length] == ' ' ||
                             query.ToCharArray()[positionDoubleVariable +  listVars[i].Length] == ',')||
                             query.ToCharArray()[positionDoubleVariable + listVars[i].Length] == ';')
@@ -540,7 +542,10 @@ namespace WpfApplication1
             for (int j = 0; j < masNameAllType.Length; j++)
                 for (int i = 0; i < listVars.Count; i++)
                 {
-                    if (listVars[i] == masNameAllType[j])
+                    if (listVars[i] == masNameAllType[j] ||
+                        !(Char.IsLetter(listVars[i].ToCharArray()[0])||
+                        listVars[i].ToCharArray()[0]=='_')
+                        )
                     {
                         int positionFirstVariable = query.IndexOf(listVars[i]);
                         int positionDoubleVariable = query.IndexOf(listVars[i],
