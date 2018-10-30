@@ -70,10 +70,12 @@ namespace NUnit.Tests2
             #endregion //double variable
 
             #region //other query with error
+             new object[] { "string [, ,,] bbb, a2  ,"+'\n'+
+             "float a2 ff ;", 'f' , true,2,1},
             new object[] { "     string [, ,,] bbb, a2  , uu ;;;"+'\n'+
              " float a, ff ;; string? s;", '?' , true,2,23},
             new object[] { "     string [, ,,] bbb, a2  , uu ;;;"+'\n'+
-             " float a, ff ;; "+'\n'+"string? s;", '?' , true,3,7},
+             " float a, ff ; "+'\n'+"string? s;", '?' , true,3,7},
             new object[] { "     string [, ,,] bbb, a2  , uu ;;;"+'\n'+
              " float a, "+'\n'+"ff ;; string"+'\n'+"? s;", '?' , true,4,1},
             new object[] { "     string! [, ,,] bbb, a2  , uu ;;;"+'\n'+
