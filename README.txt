@@ -1,1 +1,1 @@
-This programm analis C# code and check variable declarations.
+This program to check variable declarations (C#).
